@@ -29,6 +29,7 @@ export function mountWallpaperSettings(
     busy = false,
     generation = 0,
     listGeneration = 0;
+  let pendingControls: Partial<Settings> | undefined;
   const card = element("div", "wallpaper-settings");
   const preview = element("div", "wallpaper-preview");
   const previewImage = element("img");
@@ -115,7 +116,7 @@ export function mountWallpaperSettings(
     toggles.set(key, input);
     input.onchange = () => {
       const value = input.checked;
-      void operation(() => store.set({ [key]: value }));
+      saveControl({ [key]: value });
     };
   }
   addToggle(
@@ -157,7 +158,7 @@ export function mountWallpaperSettings(
     range.oninput = () => (output.value = range.value + suffix);
     range.onchange = () => {
       const value = Number(range.value);
-      void operation(() => store.set({ [key]: value }));
+      saveControl({ [key]: value });
     };
     control.append(range, output);
     row.append(text, control);
@@ -186,7 +187,7 @@ export function mountWallpaperSettings(
   frameControls.append(fitRow);
   fit.onchange = () => {
     const value = fit.value as Settings["homeWallpaperFit"];
-    void operation(() => store.set({ homeWallpaperFit: value }));
+    saveControl({ homeWallpaperFit: value });
   };
   addRange(frameControls, "homeWallpaperX", "Horizontal position");
   addRange(frameControls, "homeWallpaperY", "Vertical position");
@@ -336,11 +337,28 @@ export function mountWallpaperSettings(
           "Couldn’t load saved images. Reopen settings to try again.";
     }
   }
+  function saveControl(patch: Partial<Settings>) {
+    if (busy || disposed) {
+      sync();
+      return;
+    }
+    const previous = Object.fromEntries(
+      Object.keys(patch).map((key) => [key, settings[key as keyof Settings]]),
+    );
+    pendingControls = patch;
+    settings = { ...settings, ...patch };
+    void operation(() => store.set(patch)).then((saved) => {
+      if (disposed) return;
+      pendingControls = undefined;
+      if (!saved) settings = { ...settings, ...previous };
+      sync();
+    });
+  }
   async function operation(
     action: () => Promise<void>,
     message = "Saved on this device.",
   ) {
-    if (busy || disposed) return;
+    if (busy || disposed) return false;
     busy = true;
     sync();
     status.textContent = "Saving…";
@@ -351,10 +369,12 @@ export function mountWallpaperSettings(
         await refresh();
         status.textContent = message;
       }
+      return true;
     } catch (error) {
       if (!disposed)
         status.textContent =
           error instanceof Error ? error.message : "Couldn’t save. Try again.";
+      return false;
     } finally {
       if (!disposed) {
         busy = false;
@@ -430,7 +450,7 @@ export function mountWallpaperSettings(
     const changed =
       next.homeWallpaperRevision !== settings.homeWallpaperRevision ||
       next.homeWallpaperId !== settings.homeWallpaperId;
-    settings = next;
+    settings = { ...next, ...pendingControls };
     if (changed) void refresh();
     else sync();
   });

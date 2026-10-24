@@ -76,11 +76,16 @@ export function startDevelopmentReload(
       void settleWrites()
         .catch(() => {})
         .then(async () => {
+          // Include Roblox tabs opened before the helper was first installed.
+          const openTabs = await chrome.tabs
+            .query({ url: ["https://*.roblox.com/*"] })
+            .catch(() => []);
           const tabs = [
             ...new Set(
-              [...pages]
-                .map((port) => port.sender?.tab?.id)
-                .filter((id): id is number => typeof id === "number"),
+              [
+                ...openTabs.map((tab) => tab.id),
+                ...[...pages].map((port) => port.sender?.tab?.id),
+              ].filter((id): id is number => typeof id === "number"),
             ),
           ];
           await chrome.storage.local.set({

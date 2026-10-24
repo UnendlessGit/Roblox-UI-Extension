@@ -1,7 +1,13 @@
-import { describe, it, expect } from "vitest";
-import { DEFAULTS, normalizeSettings } from "../../src/core/settings";
+import { describe, it, expect, vi } from "vitest";
+import {
+  DEFAULTS,
+  normalizeSettings,
+  type SettingsStore,
+  type Settings,
+} from "../../src/core/settings";
 import { MAX_IMAGE_BYTES, validWallpaper } from "../../src/core/wallpaper";
 import { needsOptimization } from "../../src/options/wallpaper-image";
+import { mountWallpaperSettings } from "../../src/options/wallpaper-settings";
 describe("wallpaper safety and defaults", () => {
   it("starts solid black, with optional blur off and cinematic surroundings on", () => {
     expect(DEFAULTS.homeWallpaperId).toBe("");
@@ -59,4 +65,76 @@ describe("wallpaper safety and defaults", () => {
       false,
     );
   });
+});
+
+describe("wallpaper controls during asynchronous saves", () => {
+  for (const failure of [false, true])
+    it(
+      failure
+        ? "restores a toggle when saving fails"
+        : "keeps a toggle in its chosen state until a slow save completes",
+      async () => {
+        const id = "00000000-0000-4000-8000-000000000001";
+        let settings = normalizeSettings({ ...DEFAULTS, homeWallpaperId: id });
+        let finish: () => void = () => {};
+        let notify: (value: Settings) => void = () => {};
+        const store: SettingsStore = {
+          get: async () => settings,
+          subscribe: (listener) => {
+            notify = listener;
+            return () => {};
+          },
+          set: (patch) =>
+            new Promise<void>((resolve, reject) => {
+              finish = () => {
+                if (failure) reject(new Error("Couldn’t save this change."));
+                else {
+                  settings = { ...settings, ...patch } as Settings;
+                  resolve();
+                }
+              };
+            }),
+        };
+        const root = document.createElement("div");
+        const dispose = mountWallpaperSettings(root, store, settings, {
+          get: async () => null,
+          list: async () => [
+            {
+              id,
+              name: "Saved image",
+              width: 2,
+              height: 2,
+              bytes: 12,
+              createdAt: 1,
+              thumbnail: "data:image/webp;base64,AAAA",
+            },
+          ],
+          set: async () => {},
+          select: async () => {},
+          remove: async () => {},
+        });
+        try {
+          const toggle = root.querySelector<HTMLInputElement>(
+            '[aria-label="Cinematic surroundings"]',
+          )!;
+          await vi.waitFor(() => expect(toggle.disabled).toBe(false));
+          toggle.checked = false;
+          toggle.dispatchEvent(new Event("change", { bubbles: true }));
+          expect(toggle.checked).toBe(false);
+          expect(toggle.disabled).toBe(true);
+          notify(settings);
+          expect(toggle.checked).toBe(false);
+          finish();
+          await vi.waitFor(() => {
+            expect(toggle.disabled).toBe(false);
+            expect(toggle.checked).toBe(failure);
+          });
+          expect(root.querySelector('[role="status"]')!.textContent).toContain(
+            failure ? "Couldn’t save" : "Saved",
+          );
+        } finally {
+          dispose();
+        }
+      },
+    );
 });

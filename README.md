@@ -68,7 +68,7 @@ npm test
 python3 scripts/package.py
 ```
 
-`build` generates the loadable extension in `dist/` and the standalone preview build in `design-preview/`. Serve `design-preview/` over HTTP to use its production preview. `package.py` creates `artifacts/Roblox-Cinema-0.6.0.zip` from the extension build.
+`build` generates the loadable extension in `dist/` and the standalone preview build in `design-preview/`. Serve `design-preview/` over HTTP to use its production preview. `package.py` creates `artifacts/Roblox-Cinema-0.6.1.zip` from the extension build.
 
 Browser tests require Playwright Chromium (`npx playwright install chromium`), or set `CHROMIUM_EXECUTABLE` to a compatible Chromium binary. The test configuration can also discover an existing macOS Playwright browser cache. Tests use temporary profiles and mock Roblox pages; they never use your real cookies or submit a transaction.
 

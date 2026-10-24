@@ -63,6 +63,14 @@ test("development builds reload the extension and Roblox pages automatically, pr
     ignoreDefaultArgs: ["--disable-extensions"],
   });
   try {
+    await context.route("https://**/*", (route) =>
+      route.fulfill({
+        contentType: "text/html",
+        body: '<!doctype html><html><head><meta name="user-data" data-userid="123" data-name="TestPlayer" data-displayname="Test Player"></head><body><div id="header">Roblox</div><main id="HomeContainer"><h1>Home</h1></main></body></html>',
+      }),
+    );
+    const alreadyOpen = await context.newPage();
+    await alreadyOpen.goto("https://www.roblox.com/home?before-install");
     const manager = await context.newPage();
     await manager.goto("chrome://extensions");
     await manager.locator("#devMode").click();
@@ -76,12 +84,6 @@ test("development builds reload the extension and Roblox pages automatically, pr
       await readFile(".cinema-dev/installed-test/manifest.json", "utf8"),
     );
     expect(manifest.version_name).toContain("development");
-    await context.route("https://**/*", (route) =>
-      route.fulfill({
-        contentType: "text/html",
-        body: '<!doctype html><html><head><meta name="user-data" data-userid="123" data-name="TestPlayer" data-displayname="Test Player"></head><body><div id="header">Roblox</div><main id="HomeContainer"><h1>Home</h1></main></body></html>',
-      }),
-    );
     const page = await context.newPage();
     await page.goto("https://www.roblox.com/home");
     await expect(page.locator("html")).toHaveAttribute("data-rc-build", first);
@@ -124,6 +126,10 @@ test("development builds reload the extension and Roblox pages automatically, pr
       "data-rc-build",
       second,
       { timeout: 20000 },
+    );
+    await expect(alreadyOpen.locator("html")).toHaveAttribute(
+      "data-rc-build",
+      second,
     );
     await expect.poll(() => server.connections()).toBe(1);
     const options = await context.newPage();
