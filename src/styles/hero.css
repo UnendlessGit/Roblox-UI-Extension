@@ -371,3 +371,83 @@ button:focus-visible {
   filter: blur(8px);
   box-shadow: none;
 }
+
+/* Home stays pure black until a wallpaper is explicitly chosen. */
+.hero::before,
+.hero::after {
+  background: none;
+}
+.home-wallpaper {
+  position: absolute;
+  inset: -20px calc(-1 * var(--rc-gutter, 32px)) 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+  background: #000;
+}
+.wallpaper-image {
+  position: absolute;
+  left: calc(-3 * var(--wallpaper-blur, 0px));
+  top: calc(-3 * var(--wallpaper-blur, 0px));
+  width: calc(100% + 6 * var(--wallpaper-blur, 0px));
+  height: calc(100% + 6 * var(--wallpaper-blur, 0px));
+  object-fit: cover;
+  object-position: center;
+  filter: blur(var(--wallpaper-blur, 0px))
+    saturate(var(--wallpaper-saturation, 1));
+}
+.wallpaper-veil {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / var(--wallpaper-dim, 0.2));
+}
+.hero[data-wallpaper]::after {
+  background: linear-gradient(to top, #000 0%, #0009 12%, transparent 45%);
+}
+:host([data-reduced-transparency]) .home-wallpaper {
+  display: none;
+}
+:host([data-reduced-transparency]) .hero::after {
+  background: none;
+}
+@media (prefers-reduced-transparency: reduce) {
+  .home-wallpaper {
+    display: none;
+  }
+  .hero::after {
+    background: none !important;
+  }
+}
+.wallpaper-image {
+  object-fit: var(--wallpaper-fit, cover);
+  object-position: var(--wallpaper-position, 50% 50%);
+  filter: blur(var(--wallpaper-blur, 0px))
+    saturate(var(--wallpaper-saturation, 1))
+    brightness(var(--wallpaper-brightness, 1));
+}
+.hero[data-wallpaper]::after {
+  background: linear-gradient(
+    to top,
+    #000,
+    transparent var(--wallpaper-fade, 45%)
+  );
+}
+:host([data-composed]) .hero:not([data-wallpaper])::after {
+  background: none;
+}
+:host([data-composed]) .hero[data-wallpaper]::after {
+  background: linear-gradient(
+    to top,
+    #000,
+    transparent var(--wallpaper-fade, 45%)
+  );
+}
+.hero[data-wallpaper] .name,
+.hero[data-wallpaper] .username {
+  text-shadow:
+    0 2px 18px #000d,
+    0 1px 3px #000;
+}
+.hero[data-wallpaper] .username {
+  color: #e3e5ed;
+}

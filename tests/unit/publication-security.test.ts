@@ -37,6 +37,18 @@ describe("CDN image boundaries", () => {
     expect(readIdentity()?.image).toBeUndefined();
   });
   it("keeps the placeholder instead of requesting an unsafe API image or fallback", async () => {
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        observe() {}
+        disconnect() {}
+      },
+    );
+    vi.stubGlobal("matchMedia", () => ({
+      matches: false,
+      addEventListener() {},
+      removeEventListener() {},
+    }));
     const hero = createHero(
       {
         id: "123",
@@ -45,27 +57,28 @@ describe("CDN image boundaries", () => {
         image: "https://notrbxcdn.com/fallback.png",
       },
       {
-        get: vi
-          .fn()
-          .mockResolvedValue({
-            data: [
-              {
-                state: "Completed",
-                imageUrl: "https://notrbxcdn.com/thumbnail.png",
-              },
-            ],
-          }),
+        get: vi.fn().mockResolvedValue({
+          data: [
+            {
+              state: "Completed",
+              imageUrl: "https://notrbxcdn.com/thumbnail.png",
+            },
+          ],
+        }),
       },
       DEFAULTS,
     );
     document.body.append(hero.host);
     await vi.waitFor(() =>
       expect(
-        hero.host.shadowRoot!.querySelector("img")!.hasAttribute("src"),
+        hero.host
+          .shadowRoot!.querySelector(".avatar-image")!
+          .hasAttribute("src"),
       ).toBe(false),
     );
     expect(
-      hero.host.shadowRoot!.querySelector<HTMLImageElement>("img")!.hidden,
+      hero.host.shadowRoot!.querySelector<HTMLImageElement>(".avatar-image")!
+        .hidden,
     ).toBe(true);
     hero.destroy();
   });

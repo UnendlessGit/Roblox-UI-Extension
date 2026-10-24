@@ -10,6 +10,13 @@ import {
 import type { ResourceBridge } from "../core/bridge";
 import { element } from "../core/dom";
 import { mountFixture, previewUrls, type PreviewPage } from "./fixtures";
+import {
+  readWallpaper,
+  writeWallpaper,
+  listWallpapers,
+  deleteWallpaper,
+} from "../core/wallpaper-db";
+import type { WallpaperStore } from "../core/wallpaper";
 import { renderPreferences } from "../options/preferences";
 let settings: Settings = normalizeSettings(
   JSON.parse(localStorage.getItem("cinema-preview-settings") || "null"),
@@ -27,6 +34,38 @@ const store: SettingsStore = {
   subscribe(listener) {
     listeners.add(listener);
     return () => listeners.delete(listener);
+  },
+};
+const wallpapers: WallpaperStore = {
+  get: readWallpaper,
+  list: listWallpapers,
+  async select(id) {
+    if (id && !(await listWallpapers()).some((image) => image.id === id))
+      throw new Error("Image is no longer saved.");
+    await store.set({
+      homeWallpaperId: id,
+      homeWallpaperRevision: crypto.randomUUID(),
+    });
+  },
+  async set(image) {
+    if (!image) {
+      await this.select("");
+      return;
+    }
+    const record = { ...image, id: crypto.randomUUID(), createdAt: Date.now() };
+    await writeWallpaper(record);
+    await store.set({
+      homeWallpaperId: record.id,
+      homeWallpaperRevision: crypto.randomUUID(),
+    });
+  },
+  async remove(id) {
+    await deleteWallpaper(id);
+    await store.set({
+      homeWallpaperId:
+        settings.homeWallpaperId === id ? "" : settings.homeWallpaperId,
+      homeWallpaperRevision: crypto.randomUUID(),
+    });
   },
 };
 const resources: ResourceBridge = {
@@ -77,7 +116,7 @@ const panel = element("div");
 panel.id = "app";
 dialog.append(close, panel);
 document.body.append(dialog);
-await renderPreferences(panel, store);
+await renderPreferences(panel, store, { wallpapers });
 preferences.onclick = () => dialog.showModal();
 let active: PreviewPage =
   (new URLSearchParams(location.search).get("page") as PreviewPage) || "home";
@@ -87,6 +126,7 @@ mountFixture(active);
 let stop = await start({
   store,
   bridge: resources,
+  wallpapers,
   url: () => new URL(previewUrls[active]),
   openSettings: () => dialog.showModal(),
 });
@@ -98,6 +138,7 @@ select.onchange = () => {
   void start({
     store,
     bridge: resources,
+    wallpapers,
     url: () => new URL(previewUrls[active]),
     openSettings: () => dialog.showModal(),
   }).then((fn) => {

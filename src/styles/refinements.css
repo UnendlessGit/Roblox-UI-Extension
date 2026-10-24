@@ -1083,3 +1083,8 @@ html[data-rc-family="avatar"] #scale .section-sliders {
 html[data-rc-family="avatar"] #scale .scale-container:empty {
   display: none !important;
 }
+
+html[data-rc-family="home"][data-rc-home-wallpaper] [data-rc-home-flow] {
+  position: relative;
+  isolation: isolate;
+}

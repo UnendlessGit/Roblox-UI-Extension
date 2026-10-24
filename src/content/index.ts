@@ -19,12 +19,14 @@ import { createProfileInfo } from "./profile";
 import { createFriendStats } from "./friend-stats";
 import { createIncludedItems } from "./included-items";
 import { createProductRecovery } from "./product-recovery";
+import type { WallpaperStore } from "../core/wallpaper";
 
 export interface RuntimeOptions {
   store?: SettingsStore;
   bridge?: ResourceBridge;
   url?: () => URL;
   openSettings?: () => void;
+  wallpapers?: WallpaperStore;
 }
 export async function start(options: RuntimeOptions = {}) {
   const store = options.store || settingsStore,
@@ -230,7 +232,7 @@ export async function start(options: RuntimeOptions = {}) {
       hero = undefined;
       heroKey = key;
       if (identity && main) {
-        hero = createHero(identity, resources, settings);
+        hero = createHero(identity, resources, settings, options.wallpapers);
         heroMain!.prepend(hero.host);
       }
     } else if (hero && heroMain && hero.host.parentElement !== heroMain) {
@@ -238,6 +240,7 @@ export async function start(options: RuntimeOptions = {}) {
       // retain its thumbnail and requests rather than recreating it during hydration.
       heroMain.prepend(hero.host);
     }
+    hero?.update(settings);
     hero?.host.toggleAttribute(
       "data-composed",
       !!heroMain?.hasAttribute("data-rc-home-flow"),

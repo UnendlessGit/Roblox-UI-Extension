@@ -1,10 +1,121 @@
 import { ResourceCache } from "./core/resource-cache";
 import { allowedResource, type ResourceKind } from "./core/bridge";
 import { normalizeSettings } from "./core/settings";
+import { validWallpaper } from "./core/wallpaper";
+import {
+  readWallpaper,
+  writeWallpaper,
+  listWallpapers,
+  deleteWallpaper,
+} from "./core/wallpaper-db";
 const resources = new ResourceCache();
 const pending = new Map<string, Promise<unknown>>();
 let settingsWrites = Promise.resolve();
 chrome.runtime.onMessage.addListener((message, sender, respond) => {
+  if (
+    [
+      "wallpaper-get",
+      "wallpaper-list",
+      "wallpaper-set",
+      "wallpaper-select",
+      "wallpaper-remove",
+    ].includes(message?.type)
+  ) {
+    if (sender.id !== chrome.runtime.id) {
+      respond({ ok: false, error: "Not permitted" });
+      return;
+    }
+    const validId =
+      typeof message.id === "string" && /^[a-f0-9-]{36}$/.test(message.id);
+    if (message.type === "wallpaper-get") {
+      if (!validId) {
+        respond({ ok: false, error: "Invalid wallpaper" });
+        return;
+      }
+      void readWallpaper(message.id).then(
+        (image) => respond({ ok: true, image }),
+        () => respond({ ok: false, error: "Wallpaper unavailable" }),
+      );
+    } else if (message.type === "wallpaper-list") {
+      void listWallpapers().then(
+        (images) => respond({ ok: true, images }),
+        () => respond({ ok: false, error: "Couldn’t load saved images" }),
+      );
+    } else {
+      if (
+        message.type === "wallpaper-set"
+          ? message.image !== null && !validWallpaper(message.image)
+          : !validId &&
+            !(message.type === "wallpaper-select" && message.id === "")
+      ) {
+        respond({
+          ok: false,
+          error: "This image cannot be saved. Try compressing it first.",
+        });
+        return;
+      }
+      settingsWrites = settingsWrites
+        .then(async () => {
+          const current = normalizeSettings(
+            (await chrome.storage.local.get("settings")).settings,
+          );
+          let nextId = current.homeWallpaperId;
+          let added: string | undefined;
+          let removed: Awaited<ReturnType<typeof readWallpaper>> = null;
+          if (message.type === "wallpaper-set") {
+            if (message.image) {
+              if ((await listWallpapers()).length >= 100)
+                throw new Error(
+                  "Your gallery is full. Delete an image before adding another.",
+                );
+              const image = {
+                ...message.image,
+                id: crypto.randomUUID(),
+                createdAt: Date.now(),
+              };
+              await writeWallpaper(image);
+              added = image.id;
+              nextId = image.id;
+            } else nextId = "";
+          } else if (message.type === "wallpaper-select") {
+            if (
+              message.id &&
+              !(await listWallpapers()).some((image) => image.id === message.id)
+            )
+              throw new Error("That image is no longer saved.");
+            nextId = message.id;
+          } else {
+            removed = await readWallpaper(message.id);
+            await deleteWallpaper(message.id);
+            if (nextId === message.id) nextId = "";
+          }
+          try {
+            await chrome.storage.local.set({
+              settings: normalizeSettings({
+                ...current,
+                homeWallpaperId: nextId,
+                homeWallpaperRevision: crypto.randomUUID(),
+              }),
+            });
+          } catch (error) {
+            if (added) await deleteWallpaper(added);
+            if (removed) await writeWallpaper(removed);
+            throw error;
+          }
+          respond({ ok: true });
+        })
+        .catch((error) =>
+          respond({
+            ok: false,
+            error:
+              error instanceof Error
+                ? error.message
+                : "Couldn’t save the wallpaper. Try compressing it first.",
+          }),
+        );
+    }
+    return true;
+  }
   if (message?.type === "settings-patch" && sender.id === chrome.runtime.id) {
     settingsWrites = settingsWrites
       .then(async () => {
@@ -12,7 +123,15 @@ chrome.runtime.onMessage.addListener((message, sender, respond) => {
           (await chrome.storage.local.get("settings")).settings,
         );
         await chrome.storage.local.set({
-          settings: normalizeSettings({ ...current, ...message.patch }),
+          settings: normalizeSettings({
+            ...current,
+            ...message.patch,
+            homeWallpaperId:
+              message.patch?.homeWallpaperId === ""
+                ? ""
+                : current.homeWallpaperId,
+            homeWallpaperRevision: current.homeWallpaperRevision,
+          }),
         });
         respond({ ok: true });
       })

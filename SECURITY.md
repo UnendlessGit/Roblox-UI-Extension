@@ -12,6 +12,8 @@ The publication review for version 0.5.7 addresses all findings in the supplied 
 
 All worker resource fetches now omit credentials, including the public avatar endpoint. A cookie-free check of that endpoint returned a completed thumbnail. Preferences remain local; the manifest does not request cookie access. Account identity comes from the current viewer's page, not a developer fallback.
 
+Version 0.6.0 adds a local wallpaper gallery. Selected raster images are decoded and optionally compressed on the device, then copied to extension-origin IndexedDB. No filesystem path, persistent file handle, remote image URL or upload is used. Image messages require the extension's own sender ID, validate raster data URLs and impose file/dimension/gallery limits. Writes are serialized with settings changes; failed activation rolls back a new copy, and failed deletion settings updates restore the removed image. Gallery listings return small previews rather than all originals. Deleting a gallery image removes its original stored copy and preview. Local photos and test screenshots are excluded from the repository and release archive.
+
 ## Release safeguards
 
 - The packager requires its explicit 18-file distribution allowlist, including exactly one options script and stylesheet; extra files or symlinks fail the release.

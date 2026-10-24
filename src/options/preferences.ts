@@ -8,6 +8,8 @@ import {
   type SettingsStore,
 } from "../core/settings";
 import { icon } from "../ui/icons";
+import { mountWallpaperSettings } from "./wallpaper-settings";
+import type { WallpaperStore } from "../core/wallpaper";
 export async function renderPreferences(
   root: HTMLElement,
   store: SettingsStore,
@@ -15,6 +17,7 @@ export async function renderPreferences(
     popup?: boolean;
     openFull?: () => void;
     currentHost?: string;
+    wallpapers?: WallpaperStore;
   } = {},
 ) {
   let settings = await store.get();
@@ -101,6 +104,12 @@ export async function renderPreferences(
     "enabled",
     "Enable Cinema",
     "The complete cinematic experience.",
+  );
+  const disposeWallpaper = mountWallpaperSettings(
+    group("Home background"),
+    store,
+    settings,
+    options.wallpapers,
   );
   const home = group("Friends");
   toggle(
@@ -293,5 +302,9 @@ export async function renderPreferences(
         (input.nextElementSibling as HTMLOutputElement).value = input.value;
     updateSites();
   });
-  return unsubscribe;
+  return () => {
+    unsubscribe();
+    disposeWallpaper();
+    clearTimeout(errorTimer);
+  };
 }

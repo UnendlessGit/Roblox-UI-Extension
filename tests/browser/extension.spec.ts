@@ -2419,3 +2419,361 @@ test("chat defaults to hidden and Help uses Cinema navigation without losing nat
   await expect(page.locator("#chat-container")).toBeVisible();
   await page.close();
 });
+
+test("wallpapers keep independent local copies, a persistent gallery, frosted controls and background-only surroundings", async ({}, testInfo) => {
+  test.setTimeout(60000);
+  await worker.evaluate(() =>
+    chrome.storage.local.set({ settings: { enabled: true } }),
+  );
+  const settings = await context.newPage();
+  await settings.goto(`chrome-extension://${extensionId}/options.html`);
+  const home = await context.newPage();
+  await home.route("https://www.roblox.com/home", (r) =>
+    r.fulfill({ body: realisticHome(), contentType: "text/html" }),
+  );
+  await home.goto("https://www.roblox.com/home");
+  const hero = home.locator("roblox-cinema-hero");
+  await expect(hero.locator(".hero")).toHaveCSS(
+    "background-color",
+    "rgb(0, 0, 0)",
+  );
+  expect(
+    await hero
+      .locator(".hero")
+      .evaluate((e) => getComputedStyle(e, "::before").backgroundImage),
+  ).toBe("none");
+  expect(
+    await hero
+      .locator(".hero")
+      .evaluate((e) => getComputedStyle(e, "::after").backgroundImage),
+  ).toBe("none");
+  const createImage = async (noise: boolean) =>
+    Buffer.from(
+      await settings.evaluate((noise) => {
+        const c = document.createElement("canvas");
+        c.width = noise ? 1400 : 960;
+        c.height = noise ? 1000 : 540;
+        const ctx = c.getContext("2d")!;
+        if (noise) {
+          const image = ctx.createImageData(c.width, c.height);
+          let seed = 71;
+          for (let i = 0; i < image.data.length; i += 4) {
+            for (let n = 0; n < 3; n++) {
+              seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+              image.data[i + n] = seed >>> 24;
+            }
+            image.data[i + 3] = 255;
+          }
+          ctx.putImageData(image, 0, 0);
+        } else {
+          const gradient = ctx.createLinearGradient(0, 0, c.width, c.height);
+          gradient.addColorStop(0, "#164e86");
+          gradient.addColorStop(0.5, "#5b559e");
+          gradient.addColorStop(1, "#d39b7a");
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, c.width, c.height);
+        }
+        return c.toDataURL("image/png").split(",")[1];
+      }, noise),
+      "base64",
+    );
+  const small = await createImage(false),
+    large = await createImage(true);
+  expect(large.length).toBeGreaterThan(4 * 1024 * 1024);
+  const original = join(profile, "desktop-image.png");
+  await writeFile(original, small);
+  const picker = settings.getByLabel("Import Home wallpaper");
+  await picker.setInputFiles(original);
+  await expect(
+    settings.getByRole("button", {
+      name: "Use wallpaper desktop-image.png",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await rm(original);
+  await settings.reload();
+  await expect(
+    settings.getByRole("button", {
+      name: "Use wallpaper desktop-image.png",
+      exact: true,
+    }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(hero.locator(".hero")).toHaveAttribute(
+    "data-wallpaper",
+    "ready",
+  );
+  await expect(home.locator(".rc-home-wallpaper-ambient")).toBeVisible();
+  const inputBounds = await hero.locator(".identity").boundingBox();
+  await settings
+    .getByRole("switch", { name: "Glass blur", exact: true })
+    .check();
+  await expect(hero.locator(".wallpaper-image")).toHaveCSS(
+    "filter",
+    /blur\(20px\)/,
+  );
+  expect(await hero.locator(".identity").boundingBox()).toEqual(inputBounds);
+  await expect(hero.locator(".identity")).toHaveCSS("filter", "none");
+  await expect(hero.locator(".stage")).toHaveCSS("filter", "none");
+  await settings.getByText("Surrounding adjustments", { exact: true }).click();
+  await settings
+    .getByRole("slider", { name: "Extension below image", exact: true })
+    .evaluate((e) => {
+      (e as HTMLInputElement).value = "600";
+      e.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+  await expect
+    .poll(() =>
+      worker.evaluate(
+        async () =>
+          (
+            (await chrome.storage.local.get("settings")).settings as {
+              homeWallpaperExtendY: number;
+            }
+          ).homeWallpaperExtendY,
+      ),
+    )
+    .toBe(600);
+  await expect(home.locator(".rc-home-wallpaper-ambient")).toHaveCSS(
+    "pointer-events",
+    "none",
+  );
+  await expect(home.locator(".rc-home-wallpaper-ambient")).toHaveCSS(
+    "z-index",
+    "-1",
+  );
+  for (const width of [698, 1440]) {
+    await home.setViewportSize({ width, height: 987 });
+    await expect
+      .poll(() =>
+        home.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+      )
+      .toBe(true);
+  }
+  await settings
+    .getByRole("switch", { name: "Cinematic surroundings", exact: true })
+    .uncheck();
+  await expect(home.locator(".rc-home-wallpaper-ambient")).toHaveCount(0);
+  await settings
+    .getByRole("switch", { name: "Cinematic surroundings", exact: true })
+    .check();
+  await expect(home.locator(".rc-home-wallpaper-ambient")).toBeVisible();
+  await writeFile(
+    testInfo.outputPath("wallpaper-home.png"),
+    await home.screenshot(),
+  );
+  await testInfo.attach("wallpaper-home", {
+    body: await home.screenshot(),
+    contentType: "image/png",
+  });
+  await settings
+    .getByLabel("Import Home wallpaper")
+    .setInputFiles({
+      name: "invalid.png",
+      mimeType: "image/png",
+      buffer: Buffer.from("not an image"),
+    });
+  await expect(settings.locator(".wallpaper-status")).toContainText(
+    "couldn’t be opened",
+  );
+  await expect(
+    settings.getByRole("button", { name: /Use wallpaper/ }),
+  ).toHaveCount(1);
+  await settings.getByLabel("Import Home wallpaper").setInputFiles({
+    name: "large-original.png",
+    mimeType: "image/png",
+    buffer: large,
+  });
+  await expect(
+    settings.getByRole("alertdialog", { name: "Large wallpaper image" }),
+  ).toBeVisible();
+  await expect(
+    settings.getByRole("button", { name: /Use wallpaper/ }),
+  ).toHaveCount(1);
+  await settings.getByRole("button", { name: "Cancel", exact: true }).click();
+  await expect(
+    settings.getByRole("button", { name: /Use wallpaper/ }),
+  ).toHaveCount(1);
+  await settings
+    .getByLabel("Import Home wallpaper")
+    .setInputFiles({
+      name: "large-original.png",
+      mimeType: "image/png",
+      buffer: large,
+    });
+  await expect(
+    settings.getByRole("alertdialog", { name: "Large wallpaper image" }),
+  ).toBeVisible();
+  await settings
+    .getByRole("button", { name: "Proceed anyway", exact: true })
+    .click();
+  await expect(
+    settings.getByRole("button", { name: /Use wallpaper/ }),
+  ).toHaveCount(2);
+  await settings
+    .getByRole("button", {
+      name: "Use wallpaper desktop-image.png",
+      exact: true,
+    })
+    .click();
+  await expect(
+    settings.getByRole("button", {
+      name: "Use wallpaper desktop-image.png",
+      exact: true,
+    }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await settings.getByLabel("Import Home wallpaper").setInputFiles({
+    name: "compressed-image.png",
+    mimeType: "image/png",
+    buffer: large,
+  });
+  await expect(
+    settings.getByRole("alertdialog", { name: "Large wallpaper image" }),
+  ).toBeVisible();
+  await settings
+    .getByRole("button", { name: "Compress image", exact: true })
+    .click();
+  await expect(
+    settings.getByRole("button", { name: /Use wallpaper/ }),
+  ).toHaveCount(3);
+  await writeFile(
+    testInfo.outputPath("wallpaper-settings.png"),
+    await settings.locator(".wallpaper-settings").screenshot(),
+  );
+  const saved = await settings.evaluate(() =>
+    chrome.runtime.sendMessage({ type: "wallpaper-list" }),
+  );
+  const originalCopy = saved.images.find(
+      (image: any) => image.name === "large-original.png",
+    ),
+    compressed = saved.images.find(
+      (image: any) => image.name === "compressed-image.png",
+    );
+  expect(originalCopy.bytes).toBe(large.length);
+  expect(compressed.bytes).toBeLessThan(large.length);
+  expect(compressed.width).toBe(1400);
+  expect(compressed.height).toBe(1000);
+  await settings
+    .getByRole("button", {
+      name: "Delete wallpaper large-original.png",
+      exact: true,
+    })
+    .click();
+  await expect(
+    settings.getByRole("button", { name: /Use wallpaper/ }),
+  ).toHaveCount(2);
+  expect(
+    (
+      await settings.evaluate(
+        (id) => chrome.runtime.sendMessage({ type: "wallpaper-get", id }),
+        originalCopy.id,
+      )
+    ).image,
+  ).toBeNull();
+  await settings
+    .getByRole("button", {
+      name: "Delete wallpaper compressed-image.png",
+      exact: true,
+    })
+    .click();
+  await expect(
+    settings.getByRole("button", { name: /Use wallpaper/ }),
+  ).toHaveCount(1);
+  await expect(hero.locator(".home-wallpaper")).toBeHidden();
+  await settings
+    .getByRole("button", {
+      name: "Use wallpaper desktop-image.png",
+      exact: true,
+    })
+    .click();
+  await home.reload();
+  await expect(hero.locator(".hero")).toHaveAttribute(
+    "data-wallpaper",
+    "ready",
+  );
+  expect(
+    await hero
+      .locator(".wallpaper-image")
+      .evaluate((e) => (e as HTMLImageElement).naturalWidth),
+  ).toBe(960);
+  expect(
+    await worker.evaluate(
+      async () =>
+        JSON.stringify((await chrome.storage.local.get("settings")).settings)
+          .length,
+    ),
+  ).toBeLessThan(5000);
+  await settings
+    .getByRole("switch", { name: /Reduce transparency Solid/ })
+    .check();
+  await expect(hero.locator(".home-wallpaper")).toBeHidden();
+  await expect(home.locator(".rc-home-wallpaper-ambient")).toHaveCount(0);
+  await settings
+    .getByRole("switch", { name: /Reduce transparency Solid/ })
+    .uncheck();
+  await expect(hero.locator(".hero")).toHaveAttribute(
+    "data-wallpaper",
+    "ready",
+  );
+  await settings
+    .getByRole("button", { name: "Use solid black", exact: true })
+    .click();
+  await expect(hero.locator(".home-wallpaper")).toBeHidden();
+  await expect(
+    settings.getByRole("button", { name: /Use wallpaper/ }),
+  ).toHaveCount(1);
+  await settings
+    .getByRole("button", {
+      name: "Delete wallpaper desktop-image.png",
+      exact: true,
+    })
+    .click();
+  await expect(
+    settings.getByRole("button", { name: /Use wallpaper/ }),
+  ).toHaveCount(0);
+  const wide = Buffer.from(
+    await settings.evaluate(() => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 7680;
+      canvas.height = 1080;
+      const ctx = canvas.getContext("2d")!;
+      const gradient = ctx.createLinearGradient(0, 0, 7680, 1080);
+      gradient.addColorStop(0, "#164e86");
+      gradient.addColorStop(1, "#d39b7a");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 7680, 1080);
+      return canvas.toDataURL("image/png").split(",")[1];
+    }),
+    "base64",
+  );
+  await settings
+    .getByLabel("Import Home wallpaper")
+    .setInputFiles({ name: "wide.png", mimeType: "image/png", buffer: wide });
+  await expect(
+    settings.getByRole("alertdialog", { name: "Large wallpaper image" }),
+  ).toBeVisible();
+  await settings
+    .getByRole("button", { name: "Compress image", exact: true })
+    .click();
+  await expect(
+    settings.getByRole("button", {
+      name: "Use wallpaper wide.png",
+      exact: true,
+    }),
+  ).toBeVisible();
+  const wideResult = await settings.evaluate(() =>
+    chrome.runtime.sendMessage({ type: "wallpaper-list" }),
+  );
+  expect(wideResult.images[0].width).toBe(3840);
+  expect(wideResult.images[0].height).toBe(540);
+  await settings
+    .getByRole("button", { name: "Delete wallpaper wide.png", exact: true })
+    .click();
+  await expect(
+    settings.getByRole("button", { name: /Use wallpaper/ }),
+  ).toHaveCount(0);
+  await settings.close();
+  await home.close();
+  await worker.evaluate(() =>
+    chrome.storage.local.set({ settings: { enabled: true } }),
+  );
+});

@@ -4,10 +4,13 @@ import type { ResourceBridge } from "../core/bridge";
 import type { Settings } from "../core/settings";
 import { icon } from "./icons";
 import { allowedCdnImage } from "../core/urls";
+import { createHomeWallpaper } from "./home-wallpaper";
+import type { WallpaperStore } from "../core/wallpaper";
 export function createHero(
   identity: Identity,
   bridge: ResourceBridge,
   settings: Settings,
+  wallpapers?: WallpaperStore,
 ) {
   const host = element("roblox-cinema-hero");
   host.dataset.rcOwned = "";
@@ -22,6 +25,8 @@ export function createHero(
   style.textContent = heroCss;
   const hero = element("section", "hero");
   hero.setAttribute("aria-label", "Your avatar");
+  const wallpaper = createHomeWallpaper(hero, wallpapers);
+  wallpaper.update(settings);
   const info = element("div", "identity");
   const name = element("h1", "name", identity.name);
   function verified(show: boolean) {
@@ -108,7 +113,9 @@ export function createHero(
   void fallback();
   return {
     host,
+    update: (next: Settings) => wallpaper.update(next),
     destroy() {
+      wallpaper.destroy();
       abort.abort();
       host.remove();
     },

@@ -16,6 +16,24 @@ export interface Settings {
   glassSaturation: number;
   glassAberration: number;
   glassHighlight: number;
+  homeWallpaperId: string;
+  homeWallpaperRevision: string;
+  homeWallpaperBlur: boolean;
+  homeWallpaperBlurAmount: number;
+  homeWallpaperDim: number;
+  homeWallpaperFit: "cover" | "contain";
+  homeWallpaperX: number;
+  homeWallpaperY: number;
+  homeWallpaperBrightness: number;
+  homeWallpaperSaturation: number;
+  homeWallpaperFade: number;
+  homeWallpaperExtend: boolean;
+  homeWallpaperExtendX: number;
+  homeWallpaperExtendY: number;
+  homeWallpaperExtendBlur: number;
+  homeWallpaperExtendOpacity: number;
+  homeWallpaperExtendSaturation: number;
+  homeWallpaperExtendFade: number;
 }
 export const GLASS_RANGES = {
   glassRefraction: [0, 100, 1],
@@ -25,6 +43,22 @@ export const GLASS_RANGES = {
   glassAberration: [0, 3, 0.1],
   glassHighlight: [0, 20, 1],
 } as const;
+export const WALLPAPER_RANGES = {
+  homeWallpaperBlurAmount: [0, 40],
+  homeWallpaperDim: [0, 80],
+  homeWallpaperX: [0, 100],
+  homeWallpaperY: [0, 100],
+  homeWallpaperBrightness: [25, 150],
+  homeWallpaperSaturation: [0, 200],
+  homeWallpaperFade: [0, 100],
+  homeWallpaperExtendX: [0, 250],
+  homeWallpaperExtendY: [0, 1000],
+  homeWallpaperExtendBlur: [0, 100],
+  homeWallpaperExtendOpacity: [0, 100],
+  homeWallpaperExtendSaturation: [0, 200],
+  homeWallpaperExtendFade: [0, 100],
+} as const;
+export type WallpaperNumber = keyof typeof WALLPAPER_RANGES;
 export type GlassNumber = keyof typeof GLASS_RANGES;
 export type ToggleSetting = {
   [K in keyof Settings]: Settings[K] extends boolean ? K : never;
@@ -47,6 +81,24 @@ export const DEFAULTS: Settings = {
   glassSaturation: 140,
   glassAberration: 2,
   glassHighlight: 20,
+  homeWallpaperId: "",
+  homeWallpaperRevision: "",
+  homeWallpaperBlur: false,
+  homeWallpaperBlurAmount: 20,
+  homeWallpaperDim: 20,
+  homeWallpaperFit: "cover",
+  homeWallpaperX: 50,
+  homeWallpaperY: 50,
+  homeWallpaperBrightness: 100,
+  homeWallpaperSaturation: 100,
+  homeWallpaperFade: 45,
+  homeWallpaperExtend: true,
+  homeWallpaperExtendX: 80,
+  homeWallpaperExtendY: 320,
+  homeWallpaperExtendBlur: 60,
+  homeWallpaperExtendOpacity: 55,
+  homeWallpaperExtendSaturation: 120,
+  homeWallpaperExtendFade: 80,
 };
 export function normalizeSettings(value: unknown): Settings {
   const raw =
@@ -54,6 +106,24 @@ export function normalizeSettings(value: unknown): Settings {
       ? (value as Record<string, unknown>)
       : {};
   const settings = { ...DEFAULTS };
+  if (
+    typeof raw.homeWallpaperId === "string" &&
+    /^[a-f0-9-]{36}$/.test(raw.homeWallpaperId)
+  )
+    settings.homeWallpaperId = raw.homeWallpaperId;
+  if (
+    typeof raw.homeWallpaperRevision === "string" &&
+    /^[a-f0-9-]{36}$/.test(raw.homeWallpaperRevision)
+  )
+    settings.homeWallpaperRevision = raw.homeWallpaperRevision;
+  if (raw.homeWallpaperFit === "cover" || raw.homeWallpaperFit === "contain")
+    settings.homeWallpaperFit = raw.homeWallpaperFit;
+  for (const key of Object.keys(WALLPAPER_RANGES) as WallpaperNumber[]) {
+    const value = raw[key],
+      [min, max] = WALLPAPER_RANGES[key];
+    if (typeof value === "number" && Number.isFinite(value))
+      settings[key] = Math.round(Math.max(min, Math.min(max, value)));
+  }
   for (const key of Object.keys(DEFAULTS) as (keyof Settings)[]) {
     if (typeof DEFAULTS[key] === "boolean" && typeof raw[key] === "boolean")
       (settings[key] as boolean) = raw[key] as boolean;

@@ -25,6 +25,9 @@ The preview uses fictional sample identities, balances, names and activity, plus
 
 - **Enable Cinema:** apply or restore the redesign across Roblox.
 - **Home avatar:** a normal full-body thumbnail. The interactive 3D renderer and its dependencies have been removed.
+- **Home background:** pure black by default. Import JPG, PNG, WebP or AVIF images in Cinema preferences, from either the extension or the page's gear. Each import saves an independent local copy; moving or deleting the original file has no effect. Saved images form a gallery, and deleting a gallery entry deletes its stored copy. **Use solid black** keeps the gallery for later.
+- **Wallpaper appearance:** optional Glass blur, dimming, image fit, horizontal/vertical position, brightness, saturation and bottom fade. **Cinematic surroundings** starts enabled and extends blurred colors underneath nearby content, with separate side/bottom reach, blur, opacity, saturation and fade controls. Text, avatar and cards remain sharp. Reduce transparency hides the image temporarily.
+- **Large images:** imports above 4 MB, 3840px on the longest side or 8.3 megapixels offer **Proceed anyway** and **Compress image**. Compression uses high-quality WebP and resizes oversized images for screens up to 4K without changing the original. Saved copies are limited to 32 MB and the gallery to 100 images; larger imports must be compressed. Image processing happens on your device.
 - **Show friends on Home:** hide or show the complete Home friends strip independently.
 - **Show friends below game cards:** hide friend portraits without affecting the friends strip. When Roblox replaces a card’s statistics with portraits, Cinema requests only the public player/rating statistics for those games.
 - **Show website chat:** restore the floating Roblox chat panel; hidden by default. Messages remain available in the rail.
@@ -53,7 +56,7 @@ npm test
 python3 scripts/package.py
 ```
 
-`build` generates the loadable extension in `dist/` and the standalone preview build in `design-preview/`. Serve `design-preview/` over HTTP to use its production preview. `package.py` creates `artifacts/Roblox-Cinema-0.5.7.zip` from the extension build.
+`build` generates the loadable extension in `dist/` and the standalone preview build in `design-preview/`. Serve `design-preview/` over HTTP to use its production preview. `package.py` creates `artifacts/Roblox-Cinema-0.6.0.zip` from the extension build.
 
 Browser tests require Playwright Chromium (`npx playwright install chromium`), or set `CHROMIUM_EXECUTABLE` to a compatible Chromium binary. The test configuration can also discover an existing macOS Playwright browser cache. Tests use temporary profiles and mock Roblox pages; they never use your real cookies or submit a transaction.
 
@@ -70,7 +73,7 @@ The content script runs on Roblox HTML documents. The separate bundled [liquid-g
 
 ## Privacy and permissions
 
-Preferences stay in `chrome.storage.local`. There is no analytics, backend, account registration, remote executable code, cookie-reading permission, or transaction automation.
+Preferences stay in `chrome.storage.local`. Imported wallpapers and their thumbnails stay in the extension's local IndexedDB, with no link to the original file and no image upload or cloud sync. Gallery deletion removes both the original stored copy and its thumbnail; uninstalling the extension removes its saved data. There is no analytics, backend, account registration, remote executable code, cookie-reading permission, or transaction automation.
 
 Roblox host access enables styling its pages and reading the current account identity already present in the page. `activeTab` lets the popup identify the current site for its enable switch. The worker accepts only normal avatar-thumbnail, public user-verification, bounded public game-statistic, and specific public catalog item/recommendation/thumbnail lookups from the extension's Roblox content scripts. Every resource request is GET, with strict destination and parameter checks, rejected redirects, a streaming size limit, and timeouts. Public catalog recovery omits credentials and cannot invoke purchase, account, resale, or favorite endpoints. Every worker fetch, including avatar thumbnails, uses `credentials: "omit"`; no authentication is attached by the worker. Avatar URLs and the native-header fallback require HTTPS and an exact Roblox CDN host/subdomain boundary, with no embedded credentials or custom ports. Preference writes are serialized centrally to preserve rapid changes across open tabs.
 
