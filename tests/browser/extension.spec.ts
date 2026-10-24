@@ -1084,6 +1084,19 @@ test("Continue adapts its whole-card count to width, retains its item anchor, an
     )
     .toBe(6);
   await page.setViewportSize({ width: 1280, height: 720 });
+  // The old anchor can still be aligned before ResizeObserver updates the page
+  // size. Wait for the new card width before asking the controller to advance.
+  await expect
+    .poll(() =>
+      viewport.evaluate((e) => {
+        const slots = Math.max(1, Math.round((e.clientWidth + 20) / 280));
+        const expected = (e.clientWidth - 20 * (slots - 1)) / slots;
+        return Math.abs(
+          parseFloat(e.style.getPropertyValue("--rc-page-card")) - expected,
+        );
+      }),
+    )
+    .toBeLessThan(0.01);
   await expect
     .poll(() =>
       viewport.evaluate((e) =>
