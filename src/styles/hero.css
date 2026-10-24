@@ -1,0 +1,373 @@
+:host {
+  all: initial;
+  display: block;
+  position: relative;
+  color: #f5f5f7;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  line-height: 1.4;
+  color-scheme: dark;
+}
+* {
+  box-sizing: border-box;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  font: inherit;
+  cursor: pointer;
+}
+svg {
+  flex-shrink: 0;
+}
+[hidden] {
+  display: none !important;
+}
+.hero {
+  position: relative;
+  min-height: clamp(400px, 60vh, 660px);
+  display: grid;
+  grid-template-columns: 1fr 1.12fr;
+  align-items: center;
+  isolation: isolate;
+  overflow: hidden;
+  margin: 0 calc(-1 * var(--rc-gutter, 4vw)) 26px;
+  padding: 20px var(--rc-gutter, 4vw) 36px;
+  background: #000;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse at 78% 30%, #2b455d30, transparent 62%),
+    radial-gradient(ellipse at 74% 45%, #34457b65, transparent 44%),
+    radial-gradient(ellipse at 72% 80%, #5a275b38, transparent 38%);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    0deg,
+    #000,
+    transparent 22%,
+    transparent 80%,
+    #0005
+  );
+}
+.identity {
+  position: relative;
+  z-index: 3;
+  padding-bottom: 25px;
+  max-width: 650px;
+}
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #8d8d9b;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  margin-bottom: 23px;
+}
+.eyebrow::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border: 4px solid #c5c5ce;
+  transform: rotate(17deg);
+  border-radius: 2px;
+}
+.name {
+  font-size: clamp(44px, 5.1vw, 86px);
+  line-height: 1.05;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  margin: 0 0 14px;
+  overflow-wrap: anywhere;
+}
+.username {
+  font-size: 16px;
+  color: #8c8c98;
+  margin: 0;
+}
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+.actions a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 28px;
+  padding: 14px 25px;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+  border: 1px solid #ffffff1c;
+  background: #ffffff0a;
+  backdrop-filter: blur(18px);
+}
+.actions .primary {
+  color: #151519;
+  background: #f5f5f7;
+  border-color: transparent;
+}
+.actions a:hover {
+  transform: translateY(-2px);
+  background: #ffffff16;
+}
+.actions a.primary:hover {
+  background: #dddde4;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #8abaff;
+  outline-offset: 5px;
+}
+.stage {
+  position: relative;
+  align-self: stretch;
+  min-width: 0;
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stage::before {
+  content: "";
+  position: absolute;
+  bottom: 15%;
+  left: 17%;
+  right: 17%;
+  height: 12%;
+  border-radius: 50%;
+  background: #07070b;
+  box-shadow: 0 0 70px 25px #22243a1c;
+  transform: perspective(450px) rotateX(65deg);
+}
+.avatar-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+  filter: drop-shadow(0 30px 25px #0008);
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.placeholder {
+  font-size: 100px;
+  opacity: 0.08;
+  color: #9ca4d0;
+}
+.hint {
+  margin-top: 17px;
+  color: #6f6f7c;
+  font-size: 11px;
+}
+@media (max-width: 800px) {
+  .hero {
+    min-height: 420px;
+    grid-template-columns: 1fr 0.95fr;
+    padding-top: 0;
+  }
+  .name {
+    font-size: clamp(34px, 6vw, 49px);
+  }
+  .eyebrow {
+    font-size: 9px;
+    margin-bottom: 18px;
+  }
+  .actions {
+    gap: 8px;
+    margin-top: 23px;
+  }
+  .actions a {
+    padding: 12px 16px;
+    font-size: 11px;
+  }
+  .username {
+    font-size: 13px;
+  }
+  .stage {
+    min-height: 330px;
+  }
+  .stage-controls {
+    right: 0;
+    bottom: 18px;
+  }
+  .stage-controls > span {
+    display: none;
+  }
+}
+@media (max-width: 520px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: 660px;
+    align-items: end;
+  }
+  .stage {
+    position: absolute;
+    inset: 0 0 230px;
+    min-height: 0;
+  }
+  .identity {
+    grid-row: 2;
+    padding-bottom: 25px;
+  }
+  .name {
+    font-size: 42px;
+  }
+  .hero::after {
+    background: linear-gradient(0deg, #000, transparent 60%);
+  }
+  .stage-controls {
+    bottom: 0;
+    right: 25px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+:host([data-reduced-motion]) * {
+  transition: none !important;
+}
+:host([data-reduced-transparency]) .actions a {
+  backdrop-filter: none;
+  background: #17171c;
+}
+:host([data-reduced-transparency]) .actions a.primary {
+  background: #f5f5f7;
+}
+@media (prefers-reduced-transparency: reduce) {
+  .actions a {
+    backdrop-filter: none;
+    background: #17171c;
+  }
+  .actions a.primary {
+    background: #f5f5f7;
+  }
+}
+/* Composed Home: the lower foreground belongs to Roblox's native friends strip. */
+:host([data-composed]) {
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+}
+:host([data-composed]) .hero {
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0 0 var(--rc-home-friends, 156px);
+  grid-template-columns: 1fr 1.05fr;
+  overflow: visible;
+}
+:host([data-composed]) .identity {
+  padding: 0 0 12px;
+}
+:host([data-composed]) .stage {
+  min-height: 0;
+}
+:host([data-composed]) .stage-controls {
+  bottom: 6px;
+}
+:host([data-composed]) .hero::before {
+  inset: -20px calc(-1 * var(--rc-gutter, 32px)) 0;
+}
+:host([data-composed]) .hero::after {
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(0deg, #000, transparent 42%);
+}
+:host([data-composed]) .name {
+  font-size: clamp(40px, 4.8vw, 76px);
+  letter-spacing: -0.03em;
+}
+:host([data-composed]) .actions {
+  margin-top: 24px;
+}
+.name .verified {
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  width: 0.38em;
+  height: 0.38em;
+  margin-left: 0.2em;
+  background: #2788ff;
+  color: #fff;
+  border-radius: 3px;
+  transform: rotate(12deg);
+}
+.name .verified svg {
+  width: 72%;
+  height: 72%;
+  transform: rotate(-12deg);
+  stroke-width: 3;
+}
+@media (max-height: 800px) {
+  :host([data-composed]) .name {
+    font-size: clamp(36px, 4.5vw, 62px);
+  }
+  :host([data-composed]) .actions {
+    margin-top: 18px;
+  }
+  :host([data-composed]) .actions a {
+    padding: 11px 19px;
+  }
+  :host([data-composed]) .stage-controls > span {
+    display: none;
+  }
+}
+@media (max-width: 520px) {
+  :host([data-composed]) .hero {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+  :host([data-composed]) .stage {
+    position: relative;
+    inset: auto;
+  }
+  :host([data-composed]) .identity {
+    grid-row: auto;
+  }
+  :host([data-composed]) .name {
+    font-size: 30px;
+  }
+}
+.name .verified {
+  width: 0.48em;
+  height: 0.48em;
+  background: none;
+  border-radius: 0;
+  transform: none;
+}
+.name .verified svg {
+  width: 100%;
+  height: 100%;
+  transform: none;
+}
+.stage::before {
+  bottom: 6%;
+  height: 4%;
+  background: #0009;
+  opacity: 0.45;
+  filter: blur(8px);
+  box-shadow: none;
+}

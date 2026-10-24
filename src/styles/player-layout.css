@@ -1,0 +1,587 @@
+/* Cinema 0.3: each native layout owns its dimensions. */
+html[data-rc-shell="ready"] {
+  --rc-rail: 88px;
+  --rc-header: 76px;
+  --rc-gutter: clamp(24px, 2.5vw, 48px);
+  scroll-padding-top: calc(var(--rc-header) + 20px);
+  scroll-padding-bottom: 30px;
+}
+html[data-rc-shell="ready"] #container-main {
+  margin-left: var(--rc-rail) !important;
+  width: calc(100% - var(--rc-rail)) !important;
+  padding: var(--rc-header) 0 40px !important;
+}
+html[data-rc-shell="ready"] #content {
+  padding: 22px var(--rc-gutter) 40px !important;
+  max-width: 1840px !important;
+}
+html[data-rc-shell="ready"] #header {
+  height: var(--rc-header) !important;
+  min-height: var(--rc-header) !important;
+  background: #08080aee !important;
+  backdrop-filter: blur(16px);
+}
+html[data-rc-shell="ready"] #header > .container-fluid {
+  min-height: 76px;
+  padding-left: calc(var(--rc-rail) + var(--rc-gutter)) !important;
+  padding-right: 24px !important;
+  align-items: center;
+}
+html[data-rc-shell="ready"] #nav-logo-link .icon-logo {
+  transform: scale(0.84);
+  transform-origin: left center;
+  margin-right: -20px;
+}
+html[data-rc-shell="ready"] #header .rbx-navbar-right {
+  gap: 4px;
+}
+html[data-rc-family="home"][data-rc-shell="ready"] #content {
+  padding-top: 0 !important;
+}
+html[data-rc-family="home"] [data-rc-home-flow] {
+  --rc-home-stage: clamp(210px, calc(100svh - 520px), 440px);
+  --rc-home-friends: 156px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: var(--rc-home-stage) var(--rc-home-friends);
+  align-items: start;
+}
+html[data-rc-family="home"] [data-rc-home-flow] > roblox-cinema-hero {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  z-index: 0;
+  order: -4;
+}
+html[data-rc-family="home"] [data-rc-home-flow] > [data-rc-friends] {
+  grid-column: 1;
+  grid-row: 2;
+  order: -3;
+  position: relative;
+  z-index: 3;
+  min-width: 0;
+  padding-top: 5px;
+  margin: 0 !important;
+}
+html[data-rc-family="home"] [data-rc-home-flow] > [data-rc-continue] {
+  grid-column: 1;
+  grid-row: 3;
+  order: -2;
+  margin-top: 22px !important;
+}
+html[data-rc-family="home"]
+  [data-rc-home-flow]
+  > [data-rc-recommendation-group] {
+  order: 1;
+}
+html[data-rc-family="home"] [data-rc-home-flow] > .rc-recommendation-controls {
+  order: 2;
+}
+html[data-rc-family="home"]
+  [data-rc-home-flow]
+  > :not(
+    roblox-cinema-hero,
+    [data-rc-friends],
+    [data-rc-continue],
+    [data-rc-recommendation-group],
+    .rc-recommendation-controls
+  ) {
+  order: 3;
+}
+html[data-rc-family="home"] [data-rc-friends] .people-list-header {
+  margin: 0 0 12px !important;
+  padding: 0 !important;
+}
+html[data-rc-family="home"] [data-rc-friends] h2 {
+  font-size: 19px !important;
+  line-height: 26px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+html[data-rc-family="home"] [data-rc-friends] .friends-count {
+  color: #8d8d99;
+  margin-left: 5px;
+  font-size: 14px;
+  font-weight: 450;
+}
+html[data-rc-family="home"] [data-rc-friends] .see-all-link-icon {
+  font-size: 12px !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+html[data-rc-family="home"] .friends-carousel-list-container {
+  display: flex !important;
+  gap: 16px;
+  overflow-x: auto !important;
+  scrollbar-width: none;
+  padding: 2px 2px 5px !important;
+}
+html[data-rc-family="home"]
+  .friends-carousel-list-container
+  > :is(div, .friends-carousel-tile) {
+  flex: 0 0 78px !important;
+  width: 78px !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+html[data-rc-family="home"] .friends-carousel-tile {
+  width: 78px !important;
+  margin: 0 !important;
+}
+html[data-rc-family="home"]
+  .friends-carousel-tile
+  :is(.avatar, .avatar-card-image, .add-friends-icon-container) {
+  width: 68px !important;
+  height: 68px !important;
+  margin: 0 auto !important;
+  min-width: 0 !important;
+  border-radius: 50%;
+}
+html[data-rc-family="home"] .friends-carousel-tile .avatar-status {
+  right: 0 !important;
+  bottom: 0 !important;
+}
+html[data-rc-family="home"] .friends-carousel-tile-labels {
+  padding-top: 5px !important;
+  width: 78px !important;
+}
+html[data-rc-family="home"]
+  .friends-carousel-tile-labels
+  :is(.friends-carousel-display-name, .friends-carousel-tile-name) {
+  font-size: 12px !important;
+  line-height: 17px !important;
+}
+html[data-rc-family="home"] .friends-carousel-tile-sublabel {
+  font-size: 10px !important;
+  line-height: 14px !important;
+  color: #92929d;
+}
+html[data-rc-enabled] [data-rc-paged] {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none;
+  padding: 8px 0 20px !important;
+  scroll-snap-type: none !important;
+}
+html[data-rc-enabled]
+  [data-rc-paged]
+  :is(.horizontally-scrollable, .home-page-carousel) {
+  width: max-content !important;
+  max-width: none !important;
+}
+html[data-rc-enabled] [data-rc-paged] .home-page-carousel,
+html[data-rc-enabled] .games-detail [data-rc-paged] {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 20px !important;
+  margin: 0 !important;
+  padding-right: var(--rc-page-tail, 0px) !important;
+}
+html[data-rc-enabled] [data-rc-paged] .home-page-carousel > li,
+html[data-rc-enabled] .games-detail [data-rc-paged] > [data-rc-card] {
+  flex: 0 0 var(--rc-page-card, calc((100% - 80px) / 5)) !important;
+  width: var(--rc-page-card, calc((100% - 80px) / 5)) !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+  scroll-snap-align: none;
+}
+html[data-rc-enabled]
+  [data-rc-paged]
+  .home-page-carousel
+  > li
+  > [data-rc-card] {
+  width: 100% !important;
+}
+html[data-rc-enabled] [data-rc-paged] a:focus-visible {
+  outline-offset: -2px;
+}
+html[data-rc-enabled] [data-rc-grid] [data-rc-card] {
+  width: 100% !important;
+}
+html[data-rc-enabled] [data-rc-card] .featured-game-icon-container {
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  aspect-ratio: 16/9;
+  padding: 0 !important;
+  border-radius: 18px !important;
+  overflow: hidden;
+}
+html[data-rc-enabled]
+  [data-rc-card]
+  .featured-game-icon-container
+  > .thumbnail-2d-container {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  border-radius: inherit !important;
+}
+html[data-rc-enabled] [data-rc-card] .featured-game-icon-container img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+html[data-rc-enabled] [data-rc-recommendations] {
+  grid-auto-rows: auto !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 28px 24px !important;
+  margin: 14px 0 8px !important;
+  padding: 8px 0 !important;
+}
+html[data-rc-enabled] [data-rc-recommendations] > li {
+  height: auto !important;
+  max-height: none !important;
+  position: relative !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+}
+html[data-rc-enabled] [data-rc-recommendations] .game-card-container {
+  width: 100% !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+/* Native wide tiles float artwork and cap rows using their original 280px size. */
+html[data-rc-enabled] [data-rc-recommendations] .game-card-link {
+  display: flex !important;
+  flex-direction: column;
+}
+html[data-rc-enabled]
+  [data-rc-recommendations]
+  :is(.info-container, .info-metadata-container) {
+  float: none !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+}
+html[data-rc-enabled] [data-rc-recommendations] .game-card-name {
+  font-size: 16px !important;
+  margin-top: 11px;
+}
+html[data-rc-enabled] [data-rc-recommendation-heading-hidden],
+html[data-rc-enabled] [data-rc-recommendation-hidden],
+html[data-rc-enabled] [data-rc-feed-sentinel] {
+  display: none !important;
+}
+html[data-rc-enabled] .rc-recommendation-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 22px 0 42px;
+}
+html[data-rc-enabled] .rc-recommendation-controls[hidden],
+html[data-rc-enabled] .rc-recommendation-controls button[hidden] {
+  display: none !important;
+}
+html[data-rc-enabled] .rc-recommendation-controls button {
+  border: 1px solid #ffffff17;
+  border-radius: 24px;
+  color: #dddde6;
+  background: #17171b;
+  font-size: 13px;
+  padding: 12px 26px;
+  font-weight: 550;
+}
+html[data-rc-enabled] .rc-recommendation-controls button:hover {
+  background: #242429;
+}
+html[data-rc-enabled] [data-rc-events] {
+  grid-auto-rows: auto !important;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(300px, 100%), 380px)
+  ) !important;
+  gap: 24px !important;
+  align-items: start;
+  margin: 18px 0 36px !important;
+}
+html[data-rc-enabled] [data-rc-events] > li {
+  height: auto !important;
+  max-height: none !important;
+  padding: 14px !important;
+  background: #111114 !important;
+  border: 1px solid #ffffff0d !important;
+  border-radius: 22px !important;
+  overflow: hidden;
+}
+html[data-rc-enabled] [data-rc-events] .featured-game-icon-container {
+  border-radius: 13px !important;
+}
+html[data-rc-enabled] [data-rc-events] .game-card-container {
+  width: 100% !important;
+  max-height: none !important;
+  padding: 0 !important;
+}
+html[data-rc-enabled] [data-rc-events] .game-card-text-pill {
+  top: 10px !important;
+  left: 10px !important;
+  right: auto !important;
+  max-width: calc(100% - 20px);
+  border-radius: 20px;
+  background: #18181ddb !important;
+  padding: 5px 10px !important;
+  color: #f5f5f7 !important;
+}
+html[data-rc-enabled] [data-rc-events] .game-card-text-pill .game-card-info {
+  min-height: 0;
+  color: inherit !important;
+  opacity: 1;
+  font-size: 11px !important;
+}
+html[data-rc-enabled] [data-rc-events] .wide-event-play-button {
+  display: block !important;
+  width: 100% !important;
+  margin-top: 16px !important;
+  min-height: 40px;
+  border-radius: 12px !important;
+}
+html[data-rc-enabled] .games-detail {
+  position: relative;
+  min-width: 0;
+}
+html[data-rc-enabled] .games-detail > h3 {
+  margin: 28px 0 12px;
+}
+/* Portalled native controls share the material without changing their ownership. */
+html[data-rc-enabled] [data-rc-overlay] {
+  isolation: isolate;
+  color: #f5f5f7 !important;
+  background: #17171bda !important;
+  border: 1px solid #ffffff1b !important;
+  border-radius: 20px !important;
+  box-shadow: 0 16px 65px #0008 !important;
+}
+html[data-rc-enabled]
+  :is(
+    .popover-content,
+    .dropdown-menu,
+    .modal-content,
+    .notification-stream-base
+  )[data-rc-overlay] {
+  position: relative;
+}
+html[data-rc-enabled] .notification-stream-base {
+  width: min(420px, calc(100vw - 120px)) !important;
+  overflow: hidden;
+}
+html[data-rc-enabled] .notification-stream-scroll {
+  height: min(600px, calc(100dvh - 160px)) !important;
+}
+html[data-rc-enabled] .notification-stream-header {
+  padding: 18px 20px !important;
+  background: transparent !important;
+  border-bottom: 1px solid #ffffff0e;
+}
+html[data-rc-enabled] .foundation-web-notification {
+  min-width: 0 !important;
+  width: 100% !important;
+  background: transparent !important;
+  border-radius: 12px !important;
+  padding: 16px !important;
+}
+html[data-rc-enabled] .foundation-web-notification:hover {
+  background: #ffffff08 !important;
+}
+html[data-rc-enabled]
+  :is(
+    .sendr-notification-background,
+    .sendr-notification-visible,
+    .popover .arrow
+  )::after {
+  background: transparent !important;
+}
+html[data-rc-enabled]
+  [data-rc-overlay]
+  :is(.popover-title, .dropdown-menu, .notification-card-tight) {
+  background: transparent !important;
+}
+html[data-rc-enabled][data-rc-transparency="reduce"] [data-rc-overlay] {
+  background: #18181c !important;
+  backdrop-filter: none !important;
+}
+@media (max-width: 1150px) {
+  html[data-rc-shell="ready"] {
+    --rc-header: 128px;
+  }
+  html[data-rc-shell="ready"] #header > .container-fluid {
+    height: 76px !important;
+    min-height: 76px;
+  }
+  html[data-rc-enabled] [data-rc-recommendations] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  html[data-rc-enabled] [data-rc-overlay] {
+    background: #18181c !important;
+    backdrop-filter: none !important;
+  }
+}
+html[data-rc-enabled] [data-rc-paged] .horizontal-scroll-window {
+  padding: 8px 0 20px !important;
+}
+html[data-rc-family="home"] [data-rc-home-flow] {
+  --rc-home-friends: 160px;
+}
+html[data-rc-family="home"]
+  .friend-carousel-container
+  .react-friends-carousel-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+html[data-rc-family="home"] .react-friends-carousel-container > div {
+  margin: 0 !important;
+}
+html[data-rc-family="home"] [data-rc-friends] .people-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 28px !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+}
+html[data-rc-family="home"] [data-rc-friends] .people-list-header::before,
+html[data-rc-family="home"] [data-rc-friends] .people-list-header::after {
+  display: none !important;
+}
+html[data-rc-family="home"] [data-rc-friends] h2 {
+  margin: 0 !important;
+}
+html[data-rc-family="home"] .friends-carousel-container {
+  padding: 0 !important;
+}
+html[data-rc-family="home"] .friends-carousel-list-container {
+  justify-content: flex-start !important;
+  gap: 16px !important;
+  height: 112px !important;
+}
+html[data-rc-family="home"] [data-rc-continue] {
+  margin-inline: 0 !important;
+  padding-inline: 0 !important;
+}
+html[data-rc-family="home"] [data-rc-continue] > .home-sort-header-container {
+  margin-bottom: 4px !important;
+  min-height: 32px;
+}
+html[data-rc-family="home"] [data-rc-continue] > .horizontal-scroller {
+  padding: 0 !important;
+  margin: 6px 0 0 !important;
+}
+html[data-rc-enabled] .popover[data-rc-overlay] {
+  padding: 0 !important;
+}
+html[data-rc-enabled] .popover[data-rc-overlay] > .popover-content {
+  background: transparent !important;
+  padding: 18px !important;
+  border: 0 !important;
+  border-radius: inherit !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+html[data-rc-enabled] .popover[data-rc-overlay] > .arrow {
+  display: none !important;
+}
+html[data-rc-enabled]
+  .popover[data-rc-overlay]
+  :is(
+    .friend-info,
+    .friend-game-card,
+    .friend-game-info,
+    .interaction-container
+  ) {
+  background: transparent !important;
+}
+html[data-rc-enabled]
+  .popover[data-rc-overlay]
+  :is(.btn-primary-md, .btn-control-md, .btn-growth-md) {
+  border-radius: 14px !important;
+  min-height: 42px;
+}
+html[data-rc-enabled]
+  #game-detail-page
+  [data-rc-events]
+  > .experience-events-tile.image-overlay.contained-tile {
+  padding: 14px !important;
+}
+html[data-rc-family="home"] [data-rc-home-flow] {
+  --rc-home-stage: clamp(200px, calc(100svh - 552px), 440px);
+}
+html[data-rc-family="home"] .friend-carousel-container,
+html[data-rc-family="home"]
+  .friend-carousel-container
+  .react-friends-carousel-container {
+  height: auto !important;
+  min-height: 0 !important;
+}
+html[data-rc-family="home"] [data-rc-friends] h2 {
+  height: auto !important;
+  padding: 0 !important;
+}
+html[data-rc-family="home"] .friends-carousel-tile > button,
+html[data-rc-family="home"] .friends-carousel-tile > div > button {
+  width: 78px !important;
+  padding: 0 !important;
+}
+html[data-rc-family="home"] .friends-carousel-tile-name {
+  min-width: 0;
+  max-width: 78px;
+  justify-content: center;
+}
+html[data-rc-family="home"] .friends-carousel-display-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html[data-rc-enabled] .friend-tile-dropdown[data-rc-overlay] {
+  position: relative;
+  overflow: hidden;
+}
+html[data-rc-enabled]
+  .friend-tile-dropdown[data-rc-overlay]
+  .in-game-friend-card--iarc {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 16px !important;
+  border-radius: inherit;
+  gap: 14px;
+}
+html[data-rc-enabled]
+  .friend-tile-dropdown[data-rc-overlay]
+  .in-game-friend-card {
+  background: transparent !important;
+  padding: 16px !important;
+}
+html[data-rc-enabled]
+  .friend-tile-dropdown[data-rc-overlay]
+  :is(.friend-tile-game-name, .friend-tile-is-playing) {
+  font-size: 13px !important;
+  line-height: 19px !important;
+}
+html[data-rc-enabled]
+  .friend-tile-dropdown[data-rc-overlay]
+  .friend-tile-dropdown-button {
+  background: transparent !important;
+  border-radius: 12px !important;
+}
+html[data-rc-enabled]
+  .friend-tile-dropdown[data-rc-overlay]
+  .foundation-web-button {
+  border-radius: 12px !important;
+}
+html[data-rc-enabled] [data-rc-overlay] {
+  backdrop-filter: none !important;
+}
+@supports (reading-flow: grid-rows) {
+  html[data-rc-family="home"] [data-rc-home-flow] {
+    reading-flow: grid-rows;
+  }
+}

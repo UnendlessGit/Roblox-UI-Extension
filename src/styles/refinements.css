@@ -1,0 +1,1085 @@
+/* 0.5: route-specific surfaces, without layout changes when controls open. */
+html[data-rc-hide-chat] #chat-container {
+  display: none !important;
+}
+html[data-rc-enabled] .dropdown-menu[data-rc-overlay] {
+  position: absolute !important;
+  top: calc(100% + 6px);
+  z-index: 1200;
+  margin: 0 !important;
+  padding: 8px !important;
+  min-width: 200px;
+  max-height: min(420px, 60vh);
+  overflow-y: auto;
+}
+html[data-rc-enabled] .dropdown-menu[data-rc-overlay] > li > a {
+  padding: 11px 14px !important;
+  font-size: 14px !important;
+  line-height: 1.4;
+  border-radius: 10px;
+}
+html[data-rc-enabled] .dropdown-menu[data-rc-overlay] > li > a:hover {
+  background: #ffffff0d !important;
+}
+html[data-rc-enabled] .dropdown-menu[data-rc-overlay] .rc-glass-layer {
+  position: absolute !important;
+}
+html[data-rc-enabled] :is(.input-group-btn.dropdown, .btn-group.dropdown) {
+  position: relative;
+}
+html[data-rc-enabled] .foundation-web-dialog-content[data-rc-overlay] {
+  max-height: calc(100dvh - 64px);
+  overflow-y: auto;
+}
+html[data-rc-enabled] .modal-content[data-rc-overlay] {
+  overflow: hidden;
+}
+html[data-rc-enabled]
+  .modal-content
+  :is(.modal-header, .modal-body, .modal-footer) {
+  background: transparent !important;
+}
+html[data-rc-enabled] .modal-content .modal-header {
+  padding: 24px 28px !important;
+  border-bottom: 1px solid #ffffff12;
+}
+html[data-rc-enabled] .modal-content .modal-title {
+  font-size: 24px !important;
+  font-weight: 650 !important;
+}
+html[data-rc-enabled] .modal-content .modal-body {
+  padding: 24px !important;
+}
+html[data-rc-enabled]
+  .modal-content
+  .modal-body
+  :is(
+    .section-content,
+    .section-content-off,
+    .account-selection-container,
+    .account-switcher-account-list
+  ) {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+/* The original navigation overlays even the wordmark. Its scrollbar stays usable but invisible. */
+html[data-rc-native-nav-open]
+  :is(
+    #navigation,
+    #left-navigation-container,
+    [data-testid="left-navigation"]
+  ) {
+  inset: 0 auto 0 0 !important;
+  z-index: 12010 !important;
+  width: 304px !important;
+  max-width: calc(100vw - 30px);
+  padding-top: 16px !important;
+  overscroll-behavior: contain;
+  scrollbar-width: none !important;
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  transform: translateX(0) !important;
+}
+html[data-rc-native-nav-open="opening"]
+  :is(#navigation, #left-navigation-container, [data-testid="left-navigation"]),
+html[data-rc-native-nav-open="closing"]
+  :is(
+    #navigation,
+    #left-navigation-container,
+    [data-testid="left-navigation"]
+  ) {
+  transform: translateX(-100%) !important;
+}
+html[data-rc-native-nav-open] #left-navigation-container .left-nav {
+  height: auto !important;
+  min-height: 100%;
+  overflow: visible !important;
+}
+html[data-rc-native-nav-open] #left-navigation-container * {
+  scrollbar-width: none !important;
+}
+html[data-rc-native-nav-open] #left-navigation-container ::-webkit-scrollbar,
+html[data-rc-native-nav-open] #left-navigation-container::-webkit-scrollbar {
+  display: none !important;
+  width: 0;
+}
+.native-nav-backdrop {
+  z-index: 12000;
+  isolation: isolate;
+  background: rgb(0 0 0 / var(--rc-glass-tint, 0.38));
+  touch-action: none;
+  transition: background 180ms ease;
+}
+html[data-rc-native-nav-open="closing"] .native-nav-backdrop {
+  background: transparent;
+}
+html[data-rc-shell="ready"] #header {
+  border-bottom: 0 !important;
+}
+html[data-rc-shell="ready"] #header > .rc-glass-layer {
+  bottom: 0 !important;
+}
+/* The Robux currency glyph intentionally remains an outline in every state. */
+/* Stable boxes: hover animates only the hovered artwork, never a row or grid. */
+html[data-rc-enabled] [data-rc-card]:is(:hover, :focus-within) {
+  transform: none !important;
+}
+html[data-rc-enabled] [data-rc-recommendations] > li:is(:hover, :focus-within) {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+html[data-rc-enabled]
+  [data-rc-recommendations]
+  .game-card-container:is(:hover, :focus-within) {
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+}
+html[data-rc-enabled]
+  [data-rc-recommendations]
+  :is(.info-container, .info-metadata-container, .featured-game-container):is(
+    :hover,
+    :focus-within
+  ) {
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+}
+html[data-rc-enabled] [data-rc-card] [data-rc-media] {
+  transition: box-shadow 180ms ease;
+}
+html[data-rc-enabled] [data-rc-paged] {
+  padding-top: 0 !important;
+}
+html[data-rc-enabled]
+  [data-testid="collection-carousel-viewport"][data-rc-paged] {
+  overflow: visible !important;
+  padding-top: 36px !important;
+}
+html[data-rc-enabled]
+  [data-testid="collection-carousel-viewport"][data-rc-paged]
+  > div:first-child {
+  display: flex !important;
+  width: 100% !important;
+  gap: 20px !important;
+  padding: 0 0 16px !important;
+  overflow-x: auto !important;
+  scroll-snap-type: none !important;
+  scroll-behavior: auto !important;
+}
+html[data-rc-enabled]
+  [data-testid="collection-carousel-viewport"][data-rc-paged]
+  [data-testid="collection-carousel-item-slot"] {
+  width: var(--rc-page-card) !important;
+  flex: 0 0 var(--rc-page-card) !important;
+  height: auto !important;
+  transition: none !important;
+}
+html[data-rc-enabled]
+  [data-testid="collection-carousel-viewport"][data-rc-paged]
+  > div:first-child {
+  padding-right: var(--rc-page-tail, 0px) !important;
+}
+html[data-rc-enabled]
+  [data-testid="collection-carousel-viewport"][data-rc-paged]
+  > button {
+  display: none !important;
+}
+html[data-rc-enabled]
+  [data-testid="collection-carousel-viewport"]
+  .rc-shelf-controls {
+  top: 0 !important;
+  right: 0;
+}
+/* Native stats and restored stats share one typography and icon system. */
+html[data-rc-enabled] :is(.game-card-info, .rc-public-stats) {
+  font: 600 14px/20px var(--rc-font) !important;
+  letter-spacing: 0 !important;
+  color: #a6a6af !important;
+}
+html[data-rc-enabled] .rc-public-stats {
+  gap: 12px !important;
+  margin-top: 4px !important;
+}
+html[data-rc-enabled] .rc-public-stats > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+html[data-rc-enabled]
+  :is(.game-card-info, .rc-public-stats)
+  :is(.icon-votes-gray, .icon-playing-counts-gray) {
+  width: 16px !important;
+  height: 16px !important;
+}
+/* Footer is aligned to the same content gutter and has breathing room after artwork. */
+html[data-rc-shell="ready"] #footer-container {
+  width: calc(100% - var(--rc-rail)) !important;
+  max-width: none !important;
+  margin: 48px 0 0 var(--rc-rail) !important;
+  padding: 34px var(--rc-gutter) 40px !important;
+  border-top: 1px solid #ffffff13;
+  background: #000 !important;
+}
+html[data-rc-shell="ready"]
+  #footer-container
+  :is(.footer-links, .footer-note, .footer-content) {
+  max-width: none !important;
+  margin-inline: 0 !important;
+  padding-inline: 0 !important;
+}
+/* Marketplace filters remain in normal document flow. Native filter handlers stay attached. */
+html[data-rc-family="marketplace"] .catalog-header {
+  position: relative !important;
+  top: auto !important;
+  z-index: 5 !important;
+  padding: 24px 0 !important;
+  gap: 22px !important;
+  border: 0 !important;
+  border-bottom: 1px solid #ffffff12 !important;
+  border-radius: 0 !important;
+  background: #000 !important;
+  backdrop-filter: none !important;
+  overflow: visible !important;
+}
+html[data-rc-family="marketplace"] .catalog-header .heading {
+  font-size: 34px !important;
+  letter-spacing: -0.025em;
+}
+html[data-rc-family="marketplace"]
+  .catalog-header
+  :is(.search-input, .category-options) {
+  min-height: 44px !important;
+  font-size: 15px !important;
+  background: #09090b !important;
+  border: 1px solid #ffffff20 !important;
+  border-radius: 13px !important;
+  padding: 10px 14px !important;
+}
+html[data-rc-family="marketplace"] .catalog-header .filter-select {
+  min-height: 42px;
+  padding: 9px 15px !important;
+  font-weight: 600;
+  border: 1px solid #ffffff19 !important;
+  border-radius: 14px !important;
+  background: #0c0c0e !important;
+  color: #f5f5f7 !important;
+}
+html[data-rc-family="marketplace"] .catalog-header .filter-display-text {
+  color: inherit !important;
+}
+html[data-rc-family="marketplace"] .catalog-search-options-top-bar {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  gap: 10px !important;
+}
+html[data-rc-enabled] .filters-modal-container {
+  position: absolute !important;
+  isolation: isolate;
+  z-index: 1200 !important;
+  margin-top: 8px !important;
+  min-width: min(340px, calc(100vw - 110px));
+  max-width: calc(100vw - 110px);
+  padding: 22px !important;
+  border-radius: 20px !important;
+  translate: var(--rc-filter-shift, 0px) 0;
+  max-height: var(--rc-filter-height, calc(100svh - 24px)) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+html[data-rc-enabled] .filters-modal-container .filter-options-container {
+  background: transparent !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+html[data-rc-enabled] .filters-modal-container .header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+html[data-rc-enabled] .filters-modal-container .header-container h3 {
+  font-size: 22px !important;
+}
+html[data-rc-enabled] .filters-modal-container .filter-option {
+  padding: 12px 4px !important;
+  gap: 16px;
+  background: transparent !important;
+}
+html[data-rc-enabled] .filters-modal-container .filter-option-name {
+  font-size: 15px !important;
+  font-weight: 600;
+}
+html[data-rc-enabled] .filters-modal-container .action-buttons-container {
+  margin-top: 18px;
+}
+html[data-rc-enabled] .filters-modal-container input {
+  color: #fff;
+  font: 500 15px var(--rc-font);
+}
+html[data-rc-enabled] .filters-modal-container .MuiFormControl-root {
+  width: 100%;
+}
+/* Product pages: keep purchase and preview controls, remove both cart entry points. */
+html[data-rc-family="item"]
+  :is(
+    .shopping-cart-add-remove-btn-container,
+    .item-details-header-actions .shopping-cart-btn-container
+  ) {
+  display: none !important;
+}
+html[data-rc-family="item"] .thumbnail-button-container {
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+html[data-rc-family="item"] .thumbnail-ui-container .right-align-container {
+  margin-left: auto !important;
+  width: 100% !important;
+  text-align: right !important;
+}
+/* Avatar surfaces preserve the entire selected square and give scale controls room. */
+html[data-rc-family="avatar"] .avatar-back,
+html[data-rc-family="avatar"] .avatar-thumbnail,
+html[data-rc-family="avatar"] #UserAvatar {
+  border-radius: 28px !important;
+  overflow: hidden !important;
+}
+html[data-rc-family="avatar"]
+  .item-card-container:has([data-item-status="equipped"])
+  .item-card-thumb-container {
+  background: #18181d !important;
+  box-shadow: inset 0 0 0 1px #ffffff35 !important;
+}
+html[data-rc-family="avatar"]
+  .item-card-container:has([data-item-status="equipped"])
+  :is(.item-card-thumb, .thumbnail-2d-container, img) {
+  background: transparent !important;
+}
+html[data-rc-family="avatar"] .item-card-equipped {
+  background: transparent !important;
+}
+html[data-rc-family="avatar"]
+  #avatar-react-container
+  .right-panel
+  > .tab-content {
+  padding: 28px !important;
+  background: #000 !important;
+  border: 1px solid #ffffff12 !important;
+  border-radius: 22px !important;
+  min-height: 320px;
+}
+html[data-rc-family="avatar"]
+  #avatar-react-container
+  :is(.scale-container, .body-scale-container, .avatar-scale-container) {
+  width: 100% !important;
+  padding: 20px !important;
+  background: #000 !important;
+}
+html[data-rc-family="avatar"] #avatar-react-container input[type="range"] {
+  margin-block: 16px 24px !important;
+}
+/* Community artwork must respect the separate community rail. */
+html[data-rc-family="community"] group-react-cover-photo {
+  display: block;
+  width: calc(100% - 292px) !important;
+  margin-left: 292px !important;
+}
+html[data-rc-family="community"] .group-cover-photo-fullwidth {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  margin: 0 !important;
+  height: auto !important;
+  aspect-ratio: 1440/456;
+  overflow: hidden;
+  border-radius: 24px;
+}
+html[data-rc-family="community"] .group-cover-photo-fullwidth img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+/* Bundle contents remain in their native tree and start collapsed. */
+html[data-rc-family="item"] [data-rc-included] {
+  clear: both;
+  margin-block: 28px !important;
+  border-block: 1px solid var(--rc-line);
+}
+html[data-rc-family="item"] [data-rc-included-title],
+html[data-rc-family="item"]
+  [data-rc-included-expanded="false"]
+  [data-rc-included-content] {
+  display: none !important;
+}
+html[data-rc-family="item"] .rc-included-heading {
+  flex: 1 1 100%;
+  min-width: 0;
+  width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html[data-rc-family="item"] .rc-included-toggle {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 20px 4px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--rc-ink);
+  font:
+    600 22px/1.4 -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    sans-serif;
+  text-align: left;
+  cursor: pointer;
+}
+html[data-rc-family="item"] .rc-included-toggle:hover {
+  background: #ffffff06;
+}
+html[data-rc-family="item"] .rc-included-toggle svg {
+  flex-shrink: 0;
+  transform: rotate(90deg);
+}
+html[data-rc-family="item"] .rc-included-toggle[aria-expanded="true"] svg {
+  transform: rotate(-90deg);
+}
+
+/* Public catalog recovery is owned UI beside the untouched native card lists. */
+html[data-rc-family="item"] .rc-product-recovery {
+  width: 100%;
+  min-width: 0;
+  margin-block: 24px;
+}
+html[data-rc-family="item"] .rc-product-recovery > h2 {
+  margin: 0 0 22px;
+  font-size: 22px;
+}
+html[data-rc-family="item"] .rc-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(210px, 100%), 1fr));
+  gap: 28px 22px;
+  width: 100%;
+}
+html[data-rc-family="item"] .rc-product-card {
+  min-width: 0;
+  color: var(--rc-ink);
+  font-size: 14px;
+  line-height: 1.4;
+}
+html[data-rc-family="item"] .rc-product-card a {
+  color: inherit;
+  text-decoration: none;
+}
+html[data-rc-family="item"] .rc-product-card > a {
+  display: block;
+}
+html[data-rc-family="item"] .rc-product-thumb {
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--rc-surface);
+}
+html[data-rc-family="item"] .rc-product-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+html[data-rc-family="item"] .rc-product-name {
+  display: block;
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+html[data-rc-family="item"] .rc-product-creator,
+html[data-rc-family="item"] .rc-product-standard {
+  color: var(--rc-muted);
+  font-size: 12px;
+}
+html[data-rc-family="item"] .rc-product-price {
+  margin-top: 3px;
+}
+html[data-rc-family="item"] .rc-product-status {
+  margin-block: 12px;
+  color: var(--rc-muted);
+}
+html[data-rc-family="item"] .rc-product-retry {
+  border: 1px solid #ffffff24;
+  border-radius: 12px;
+  background: var(--rc-surface);
+  color: var(--rc-ink);
+  padding: 9px 18px;
+  cursor: pointer;
+}
+html[data-rc-family="item"]
+  [data-rc-included-expanded="true"]
+  [data-rc-included-content]:has(> .rc-product-recovery) {
+  display: block !important;
+}
+html[data-rc-family="item"]
+  [data-rc-included-content]:has(> .rc-product-recovery)
+  > .item-list-cards:empty {
+  display: none !important;
+}
+
+/* Inventory shows owned items, never unrelated product recommendations. */
+html[data-rc-family="collection"] #item-recommendations-container {
+  display: none !important;
+}
+/* Financial data is separated by subtle rules rather than alternating gray slabs. */
+html[data-rc-family="finance"]
+  :is(
+    .user-transactions-container,
+    .transactions-container,
+    .transactions-summary,
+    .summary,
+    .section,
+    table,
+    thead,
+    tbody,
+    tr,
+    th,
+    td
+  ) {
+  background: #000 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+html[data-rc-family="finance"] :is(td, th) {
+  border-bottom: 1px solid #ffffff22 !important;
+  padding: 18px 16px !important;
+}
+html[data-rc-family="finance"] th {
+  font-weight: 650 !important;
+}
+html[data-rc-family="people"] .avatar-card-btns {
+  background: transparent !important;
+  padding: 14px 0 0 !important;
+}
+/* Experience utility actions and tabs are compact, keeping gallery space prominent. */
+html[data-rc-family="experience"] #horizontal-tabs {
+  display: flex !important;
+  justify-content: flex-start;
+  width: max-content !important;
+  max-width: 100%;
+  padding: 5px !important;
+  margin: 28px 0 !important;
+}
+html[data-rc-family="experience"] #horizontal-tabs > li {
+  flex: none !important;
+  width: auto !important;
+  min-width: 112px;
+}
+html[data-rc-family="experience"] .favorite-follow-vote-share {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+html[data-rc-family="experience"] .favorite-follow-vote-share > li {
+  float: none !important;
+  flex: none !important;
+  width: auto !important;
+  margin: 0 !important;
+}
+html[data-rc-family="experience"] .favorite-follow-vote-share #voting-section {
+  order: 0;
+  flex: 0 0 160px !important;
+  width: 160px !important;
+  height: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  position: static !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+html[data-rc-family="experience"]
+  .favorite-follow-vote-share
+  .social-media-share:not(:has(*)) {
+  display: none !important;
+}
+html[data-rc-family="experience"]
+  #voting-section
+  :is(.vote-summary, .voting-details, .users-vote, .vote-details) {
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  position: static !important;
+}
+html[data-rc-family="experience"] #voting-section .users-vote {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 28px auto;
+  gap: 4px 20px;
+}
+html[data-rc-family="experience"] #voting-section :is(.upvote, .downvote) {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  position: static !important;
+  float: none !important;
+  width: 100% !important;
+  height: 28px !important;
+  grid-row: 1;
+}
+html[data-rc-family="experience"] #voting-section .upvote {
+  grid-column: 1;
+}
+html[data-rc-family="experience"] #voting-section .downvote {
+  grid-column: 2;
+}
+html[data-rc-family="experience"] #voting-section .vote-details {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  position: relative !important;
+}
+html[data-rc-family="experience"] #voting-section .vote-container {
+  width: 100% !important;
+  position: absolute !important;
+  top: -3px !important;
+  left: 0 !important;
+  margin: 0 !important;
+}
+html[data-rc-family="experience"] #voting-section .vote-numbers {
+  display: flex !important;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100% !important;
+}
+html[data-rc-family="experience"]
+  #voting-section
+  :is(.count-left, .count-right) {
+  float: none !important;
+  flex: 1 0 0;
+  min-width: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+html[data-rc-family="experience"] .carousel-controls {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  padding: 0 !important;
+  background: #08080aa8 !important;
+  color: #fff !important;
+  border: 1px solid #ffffff35 !important;
+  border-radius: 50% !important;
+  display: grid !important;
+  place-items: center;
+}
+html[data-rc-family="experience"] .carousel-controls .icon-chevron-heavy-right,
+html[data-rc-family="experience"] .carousel-controls .icon-chevron-heavy-left {
+  background: none !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-top: 2px solid #fff;
+  border-right: 2px solid #fff;
+  transform: rotate(45deg);
+}
+html[data-rc-family="experience"] .carousel-controls .icon-chevron-heavy-left {
+  transform: rotate(-135deg);
+}
+html[data-rc-family="experience"]
+  :is(
+    .rbx-public-game-server-item-container,
+    .rbx-friends-game-server-item-container
+  ) {
+  display: grid !important;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, 260px), 320px)
+  ) !important;
+  gap: 20px !important;
+  padding: 18px 0 !important;
+}
+html[data-rc-family="experience"]
+  :is(.rbx-public-game-server-item, .rbx-friends-game-server-item) {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html[data-rc-family="experience"]
+  :is(.card-item-public-server, .card-item-friends-server) {
+  height: 100% !important;
+  min-height: 230px;
+  padding: 20px !important;
+  border: 1px solid #ffffff1c !important;
+  border-radius: 20px !important;
+  background: #08080a !important;
+}
+html[data-rc-family="experience"] .server-list-options {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-block: 18px;
+}
+html[data-rc-family="experience"] .player-thumbnails-container {
+  min-height: 100px;
+}
+/* Creator's semantic background surfaces, including the dashboard landing page. */
+html[data-rc-site="creator"] #creator-hub-main-content,
+html[data-rc-site="creator"]
+  #creator-hub-main-content
+  :is(
+    [class$="-background"],
+    .bg-surface-0,
+    .bg-surface-100,
+    .bg-surface-200,
+    .bg-surface-300,
+    [class*="MuiPaper-root"],
+    [class*="MuiCard-root"]
+  ) {
+  background: #000 !important;
+  background-image: none !important;
+}
+/* A cinematic profile stage with identity alongside, then native content shelves. */
+html[data-rc-family="profile"] .profile-platform-container > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+  gap: 24px 40px;
+}
+html[data-rc-family="profile"] .profile-platform-container > div > * {
+  grid-column: 1/-1;
+  min-width: 0;
+}
+html[data-rc-family="profile"]
+  .profile-platform-container
+  > div
+  > .currently-wearing-avatar-with-background {
+  grid-column: 2;
+  grid-row: 1;
+  height: 460px !important;
+  margin: 0 !important;
+}
+html[data-rc-family="profile"]
+  .profile-platform-container
+  > div
+  > .profile-header-overlay {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+html[data-rc-family="profile"] .user-profile-header {
+  padding: 28px 0 !important;
+  gap: 24px !important;
+}
+html[data-rc-family="profile"] .user-profile-header-info {
+  flex-direction: column;
+  align-items: flex-start !important;
+  gap: 28px;
+}
+html[data-rc-family="profile"] .user-profile-header-details-avatar-container {
+  display: none !important;
+}
+html[data-rc-family="profile"] #profile-header-title-container-name {
+  font: 700 clamp(34px, 3.8vw, 60px)/1.08 var(--rc-font) !important;
+  letter-spacing: -0.03em;
+}
+html[data-rc-family="profile"] .description-content {
+  font: 500 16px/1.65 var(--rc-font) !important;
+  white-space: pre-wrap;
+}
+html[data-rc-family="profile"] .rc-inline-about {
+  display: grid;
+  gap: 20px;
+  padding: 24px 0;
+  border-top: 1px solid #ffffff1c;
+}
+html[data-rc-family="profile"] .rc-inline-about[hidden] {
+  display: none !important;
+}
+html[data-rc-profile-about-loading]
+  .foundation-web-dialog-content:has(.group-description-dialog-body-header),
+html[data-rc-profile-about-loading] [data-radix-portal] {
+  visibility: hidden !important;
+}
+html[data-rc-family="profile"]
+  .rc-inline-about
+  .group-description-dialog-body-header {
+  font-size: 18px !important;
+  margin-bottom: 8px;
+}
+/* Help and safety adopts the same rail, spacing, type, and generous native action cards. */
+html[data-rc-family="help"][data-rc-site="player"] .safety-support-page {
+  max-width: none !important;
+  padding: 36px 0 !important;
+}
+html[data-rc-family="help"][data-rc-site="player"] .safety-support-page > div {
+  gap: 38px !important;
+}
+html[data-rc-family="help"][data-rc-site="player"] .safety-support-page h1 {
+  font-size: 44px !important;
+  letter-spacing: -0.025em;
+}
+html[data-rc-family="help"][data-rc-site="player"]
+  [data-testid="safsup-profile-header"] {
+  align-items: flex-start !important;
+}
+html[data-rc-family="help"][data-rc-site="player"]
+  [data-testid="safsup-profile-header"]
+  > div {
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+html[data-rc-family="help"][data-rc-site="player"]
+  .safety-support-page
+  .foundation-web-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+  gap: 24px;
+}
+html[data-rc-family="help"][data-rc-site="player"]
+  .safety-support-page
+  .foundation-web-list
+  > a {
+  padding: 14px;
+  border: 1px solid #ffffff1c;
+  border-radius: 24px;
+  background: #070709;
+}
+html[data-rc-family="help"][data-rc-site="player"] .foundation-web-list-item {
+  min-height: 170px;
+  align-items: flex-start;
+  padding: 12px !important;
+}
+html[data-rc-family="help"][data-rc-site="player"]
+  .foundation-web-list-item
+  .text-title-large {
+  font-size: 22px !important;
+  line-height: 1.3;
+}
+html[data-rc-family="help"][data-rc-site="player"]
+  .foundation-web-list-item
+  .text-body-medium {
+  font-size: 15px !important;
+  line-height: 1.6;
+}
+html[data-rc-family="help"][data-rc-site="player"] .c3-support-page-container {
+  max-width: 860px;
+  margin: auto;
+}
+html[data-rc-family="help"][data-rc-site="player"]
+  [data-testid="support-form-component"] {
+  width: 100% !important;
+  min-height: 0 !important;
+}
+html[data-rc-family="help"][data-rc-site="player"] #support form {
+  width: 100% !important;
+  background: #000 !important;
+  padding: 28px 0 !important;
+  gap: 20px;
+}
+@media (max-width: 1000px) {
+  html[data-rc-family="community"] group-react-cover-photo {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+}
+@media (max-width: 800px) {
+  html[data-rc-family="profile"] .profile-platform-container > div {
+    grid-template-columns: 1fr;
+  }
+  html[data-rc-family="profile"]
+    .profile-platform-container
+    > div
+    > .currently-wearing-avatar-with-background {
+    grid-column: 1;
+    grid-row: 1;
+    height: 360px !important;
+  }
+  html[data-rc-family="profile"]
+    .profile-platform-container
+    > div
+    > .profile-header-overlay {
+    grid-column: 1;
+    grid-row: 2;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-rc-native-nav-open]
+    :is(
+      #navigation,
+      #left-navigation-container,
+      [data-testid="left-navigation"]
+    ),
+  .native-nav-backdrop {
+    transition: none !important;
+  }
+}
+html[data-rc-motion="reduce"][data-rc-native-nav-open]
+  :is(#navigation, #left-navigation-container, [data-testid="left-navigation"]),
+html[data-rc-motion="reduce"] .native-nav-backdrop {
+  transition: none !important;
+}
+html[data-rc-enabled] .account-switcher-list {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+html[data-rc-enabled] .account-selection-list-item {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+html[data-rc-enabled]
+  .account-selection-list-item
+  :is(.account-selection, .active-account) {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 88px;
+  padding: 16px !important;
+  border: 0 !important;
+  background: transparent !important;
+  border-radius: 14px !important;
+}
+html[data-rc-enabled] .account-selection-list-item .account-selection:hover {
+  background: #ffffff0b !important;
+}
+html[data-rc-enabled] .account-selection-name-container {
+  margin: 0 !important;
+  flex: 1;
+}
+html[data-rc-enabled] .account-selection-displayname {
+  font-size: 18px !important;
+  font-weight: 650;
+}
+html[data-rc-enabled] .account-selection-username {
+  color: #a0a0aa;
+  font-size: 14px !important;
+}
+html[data-rc-enabled] .account-selection-add-account {
+  font-size: 16px !important;
+  font-weight: 600;
+}
+html[data-rc-enabled] .account-switcher-icon-add {
+  background: #ffffff09 !important;
+  width: 48px !important;
+  height: 48px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+}
+html[data-rc-enabled] .account-switcher-header .close {
+  width: 32px;
+  height: 32px;
+  padding: 4px !important;
+}
+html[data-rc-family="item"] .thumbnail-ui-container .bottom-align-container {
+  left: 0 !important;
+  right: 0 !important;
+  padding: 16px !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+}
+html[data-rc-family="marketplace"] .catalog-search-options-top-bar > div {
+  position: relative;
+}
+html[data-rc-family="avatar"]
+  .item-card-container:has([data-item-status="equipped"])
+  .item-card-thumb-container::after {
+  background: none !important;
+}
+
+html[data-rc-enabled] :is(.icon-regular-robux, .icon-filled-robux) {
+  --svg: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%20width%3D%2732%27%20height%3D%2732%27%3E%3Cpath%20d%3D%27M15.0762%207.29574C15.6479%206.96571%2016.3521%206.96571%2016.9238%207.29574L23.0762%2010.8479C23.6479%2011.1779%2024%2011.7878%2024%2012.4479V19.5521C24%2020.2122%2023.6479%2020.8221%2023.0762%2021.1521L16.9238%2024.7043C16.3521%2025.0343%2015.6479%2025.0343%2015.0762%2024.7043L8.92376%2021.1521C8.35214%2020.8221%208%2020.2122%208%2019.5521V12.4479C8%2011.7878%208.35214%2011.1779%208.92376%2010.8479L15.0762%207.29574ZM11.9998%2013V19C11.9998%2019.5523%2012.4475%2020%2012.9998%2020H18.9998C19.5521%2020%2019.9998%2019.5523%2019.9998%2019V13C19.9998%2012.4477%2019.5521%2012%2018.9998%2012H12.9998C12.4475%2012%2011.9998%2012.4477%2011.9998%2013Z%27%20fill%3D%27black%27%2F%3E%20%3Cpath%20d%3D%27M13.8556%202.56068C15.1825%201.81311%2016.8175%201.81311%2018.1444%202.56068L26.8556%207.46819C28.1825%208.21577%2029%209.59734%2029%2011.0925V20.9075C29%2022.4027%2028.1825%2023.7842%2026.8556%2024.5318L18.1444%2029.4393C16.8175%2030.1869%2015.1825%2030.1869%2013.8556%2029.4393L5.14444%2024.5318C3.81746%2023.7842%203%2022.4027%203%2020.9075V11.0925C3%209.59734%203.81746%208.21577%205.14444%207.46819L13.8556%202.56068ZM17.1628%204.30319C16.4452%203.89894%2015.5548%203.89894%2014.8372%204.30319L6.12611%209.2107C5.41362%209.61209%205%2010.336%205%2011.0925V20.9075C5%2021.664%205.41362%2022.3879%206.12611%2022.7893L14.8372%2027.6968C15.5548%2028.1011%2016.4452%2028.1011%2017.1628%2027.6968L25.8739%2022.7893C26.5864%2022.3879%2027%2021.664%2027%2020.9075V11.0925C27%2010.336%2026.5864%209.61209%2025.8739%209.2107L17.1628%204.30319Z%27%20fill%3D%27black%27%2F%3E%3C%2Fsvg%3E");
+  mask-image: var(--svg) !important;
+  -webkit-mask-image: var(--svg) !important;
+  background-color: currentColor !important;
+}
+
+html[data-rc-enabled]
+  :is(.MuiPopover-paper, .MuiDialog-paper, .foundation-web-dialog-content):has(
+    [data-rc-overlay]
+  ) {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+html[data-rc-shell="ready"] #header[data-rc-material] {
+  background: transparent !important;
+  backdrop-filter: none !important;
+}
+html[data-rc-shell="ready"] #header[data-rc-material] > .rc-glass-layer {
+  /* Keep the material's upper edge outside the viewport. Only its bottom fades. */
+  top: -32px !important;
+  border-radius: 0 !important;
+  background: linear-gradient(
+    to bottom,
+    rgb(5 5 7 / var(--rc-glass-tint, 0.38)) 0,
+    rgb(5 5 7 / var(--rc-glass-tint, 0.38)) calc(100% - 12px),
+    transparent 100%
+  );
+}
+html[data-rc-shell="ready"]:is(
+    [data-rc-glass-off],
+    [data-rc-transparency="reduce"]
+  )
+  #header[data-rc-material]
+  > .rc-glass-layer {
+  background: #080809;
+}
+@media (prefers-reduced-transparency: reduce) {
+  html[data-rc-shell="ready"] #header[data-rc-material] {
+    background: #080809 !important;
+  }
+  html[data-rc-shell="ready"] #header[data-rc-material] > .rc-glass-layer {
+    background: #080809;
+  }
+}
+@media (max-width: 800px) {
+  html[data-rc-family="home"] [data-rc-home-flow] {
+    --rc-home-stage: clamp(158px, calc(100svh - 736px), 260px);
+  }
+}
+
+html[data-rc-enabled]
+  [data-testid="collection-carousel-viewport"][data-rc-paged]
+  [data-testid="carousel-scroll-arrow"] {
+  display: none !important;
+}
+html[data-rc-enabled] .sdui-tile-image-container {
+  width: 100% !important;
+  height: auto !important;
+}
+html[data-rc-enabled] .sdui-tile-image-container .thumbnail-2d-container {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+html[data-rc-family="item"] .thumbnail-ui-container .bottom-align-container {
+  width: 100% !important;
+  max-width: none !important;
+  box-sizing: border-box;
+}
+html[data-rc-family="avatar"] #scale .section-content {
+  background: #000 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+html[data-rc-family="avatar"] #scale .section-sliders {
+  width: 100% !important;
+  margin: 0 !important;
+}
+html[data-rc-family="avatar"] #scale .scale-container:empty {
+  display: none !important;
+}

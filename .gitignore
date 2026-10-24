@@ -1,0 +1,32 @@
+node_modules/
+dist/
+design-preview/
+test-results/
+playwright-report/
+.DS_Store
+*.log
+
+# Private source references and signed-in QA evidence stay local.
+/Roblox Current UI/
+/Apple TV UI/
+/artifacts/
+/PUBLICATION_AUDIT.md
+
+# Local credentials, profiles, and machine configuration.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+.npmrc
+.netrc
+.auth/
+*storage-state*.json
+*storageState*.json
+browser-profile*/
+__pycache__/
+*.pyc

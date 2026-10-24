@@ -1,0 +1,404 @@
+/* Seamless OLED navigation and content that uses the full CSS viewport at any zoom. */
+html[data-rc-shell="ready"] {
+  --rc-rail: 68px;
+  --rc-gutter: clamp(24px, 2.2vw, 52px);
+}
+html[data-rc-shell="ready"] #content {
+  max-width: none !important;
+}
+html[data-rc-family="item"] #item-details-container .page-content {
+  max-width: none !important;
+}
+html[data-rc-shell="ready"] #header[data-rc-material] {
+  isolation: isolate;
+  background: rgb(5 5 7 / var(--rc-glass-tint, 0.38)) !important;
+  backdrop-filter: none !important;
+  border-bottom-color: #ffffff09 !important;
+}
+html[data-rc-enabled] [data-rc-overlay] {
+  background: rgb(8 8 11 / var(--rc-glass-tint, 0.38)) !important;
+  border-color: #ffffff10 !important;
+  backdrop-filter: none !important;
+}
+html[data-rc-enabled] .popover:has([data-rc-overlay]) {
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+html[data-rc-enabled][data-rc-glass-off] :is([data-rc-overlay], #header),
+html[data-rc-enabled][data-rc-transparency="reduce"]
+  :is([data-rc-overlay], #header) {
+  background: #080809 !important;
+}
+/* The native sidebar is displayed intact, with its own links and handlers. */
+html[data-rc-native-nav-open] #navigation,
+html[data-rc-native-nav-open] #left-navigation-container,
+html[data-rc-native-nav-open] [data-testid="left-navigation"] {
+  display: block !important;
+  position: fixed !important;
+  inset: 76px auto 0 0 !important;
+  width: 288px !important;
+  max-width: calc(100vw - 28px);
+  z-index: 1110 !important;
+  background: #000 !important;
+  overflow: auto !important;
+  visibility: visible !important;
+  transform: none !important;
+  border: 0 !important;
+  box-shadow: 12px 0 40px #0008;
+}
+html[data-rc-native-nav-open] #left-navigation-container .left-nav {
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  visibility: visible !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: #000 !important;
+  transition: none !important;
+}
+html[data-rc-native-nav-open]
+  #left-navigation-container
+  :is(.left-nav > div, .left-nav > div > div:first-child) {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+  background: #000 !important;
+}
+html[data-rc-native-nav-open]
+  #left-navigation-container
+  .left-nav
+  > div
+  > div:first-child {
+  flex: 1 0 100% !important;
+  min-width: 0 !important;
+}
+html[data-rc-native-nav-open]
+  #left-navigation-container
+  .left-nav
+  > div
+  > [role="separator"] {
+  display: none !important;
+}
+html[data-rc-native-nav-open] #left-navigation-container a {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+}
+.rc-native-nav-footer {
+  padding: 16px 20px 24px;
+  background: #000;
+}
+.rc-native-nav-footer button {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 8px;
+  color: #c5c5ce;
+  background: #000;
+  font:
+    600 14px -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.native-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: #0006;
+}
+.native-nav-backdrop[hidden] {
+  display: none !important;
+}
+html[data-rc-enabled]
+  :is(
+    .settings-left-navigation .menu-vertical,
+    .groups-list-sidebar,
+    .group-navigation,
+    .inventory-category-container,
+    .profile-side-bar,
+    .sidebar-wrapper,
+    .article-sidebar,
+    aside,
+    [role="complementary"]
+  ) {
+  background-color: #000 !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+html[data-rc-family="settings"] .menu-vertical a {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+}
+html[data-rc-family="settings"] .menu-vertical a.active {
+  background: #151517 !important;
+  box-shadow: none !important;
+  color: #fff !important;
+}
+/* A larger, full-width friends row, with enough room for readable activity text. */
+html[data-rc-family="home"] [data-rc-home-flow] {
+  --rc-home-stage: clamp(158px, calc(100svh - 596px), 440px);
+  --rc-home-friends: 200px;
+}
+html[data-rc-family="home"] [data-rc-friends] {
+  width: 100% !important;
+  max-width: none !important;
+}
+html[data-rc-family="home"] .friends-carousel-list-container {
+  display: grid !important;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(100px, 1fr);
+  width: 100% !important;
+  max-width: none !important;
+  gap: 16px !important;
+  height: 148px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  align-items: start;
+  justify-content: stretch !important;
+}
+html[data-rc-family="home"]
+  .friends-carousel-list-container
+  > :is(div, .friends-carousel-tile),
+html[data-rc-family="home"] .friends-carousel-tile,
+html[data-rc-family="home"] .friends-carousel-tile > button,
+html[data-rc-family="home"] .friends-carousel-tile > div > button {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  flex: initial !important;
+}
+html[data-rc-family="home"]
+  .friends-carousel-tile
+  :is(.avatar, .avatar-card-image, .add-friends-icon-container) {
+  width: clamp(76px, 6vw, 104px) !important;
+  height: clamp(76px, 6vw, 104px) !important;
+}
+html[data-rc-family="home"] .add-friends-icon-container {
+  background: #000 !important;
+  border: 1px solid #ffffff1b !important;
+}
+html[data-rc-family="home"] .add-friends-icon-container::before {
+  background: #000 !important;
+  border: 1px solid #ffffff1b;
+}
+html[data-rc-family="home"] .friends-carousel-tile-labels,
+html[data-rc-family="home"] .friends-carousel-tile-name {
+  width: 100% !important;
+  max-width: none !important;
+  letter-spacing: 0 !important;
+}
+html[data-rc-family="home"]
+  .friends-carousel-tile-labels
+  :is(.friends-carousel-display-name, .friends-carousel-tile-name) {
+  font-size: 14px !important;
+  line-height: 20px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+}
+html[data-rc-family="home"] .friends-carousel-tile-sublabel {
+  font-size: 12px !important;
+  line-height: 18px !important;
+  font-weight: 550 !important;
+  letter-spacing: 0 !important;
+  color: #b3b3bd !important;
+}
+html[data-rc-family="home"] .people-list-header a.btn-more {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 68px;
+  height: 28px;
+  padding: 0 6px !important;
+  position: static !important;
+  background: none !important;
+  background-image: none !important;
+  font: 600 13px/20px var(--rc-font) !important;
+  white-space: nowrap;
+}
+html[data-rc-family="home"] .people-list-header a.btn-more::before,
+html[data-rc-family="home"] .people-list-header a.btn-more::after {
+  content: none !important;
+  display: none !important;
+}
+html[data-rc-enabled][data-rc-hide-friends-list][data-rc-family="home"]
+  [data-rc-friends] {
+  display: none !important;
+}
+html[data-rc-enabled][data-rc-hide-friends-list][data-rc-family="home"]
+  [data-rc-home-flow] {
+  --rc-home-friends: 0px;
+}
+html[data-rc-enabled][data-rc-hide-friend-activity]
+  :is(.game-card-friend-info, [data-testid="game-tile-stats-friends"]) {
+  display: none !important;
+}
+.rc-public-stats {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 5px;
+  color: #b2b2bc;
+  font: 600 14px/22px var(--rc-font);
+  letter-spacing: 0;
+}
+.rc-public-stats > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+/* Sponsored product cards have an extra wrapper between the grid and item card. */
+html[data-rc-enabled] #populated-sponsored-catalog-items {
+  background: transparent !important;
+  padding: 12px 0 !important;
+  margin-top: 26px !important;
+}
+html[data-rc-enabled] #populated-sponsored-catalog-items .recommended-items {
+  display: grid !important;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(210px, 100%), 1fr)
+  ) !important;
+  grid-auto-rows: auto !important;
+  gap: 28px 22px !important;
+  width: 100% !important;
+  margin: 18px 0 30px !important;
+  padding: 0 !important;
+}
+html[data-rc-enabled]
+  #populated-sponsored-catalog-items
+  :is(.sponsored-item-card, .item-card, .item-card-container, .item-card-link) {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  float: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html[data-rc-enabled]
+  #populated-sponsored-catalog-items
+  .item-card-thumb-container-inner {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: inherit !important;
+}
+html[data-rc-enabled] #populated-sponsored-catalog-items .item-card-name {
+  width: 100% !important;
+  max-width: none !important;
+  font-size: 16px !important;
+  line-height: 22px !important;
+  letter-spacing: 0 !important;
+}
+html[data-rc-enabled] #populated-sponsored-catalog-items .item-card-caption {
+  padding: 10px 0 0 !important;
+}
+/* Consistent macOS text rhythm; preserve icon fonts and code faces. */
+html[data-rc-enabled] :is(h1, h2, h3, h4) {
+  letter-spacing: -0.02em;
+}
+html[data-rc-enabled]
+  :is(
+    .game-card-name,
+    .item-card-name,
+    .sdui-game-tile-primary > [data-sdui-text]
+  ) {
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.4 !important;
+}
+html[data-rc-enabled]
+  :is(.game-card-info, .game-card-info .info-label, [data-rc-secondary]) {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 22px !important;
+  letter-spacing: 0 !important;
+  opacity: 1 !important;
+}
+html[data-rc-enabled] [data-rc-card] .game-card-name {
+  font-size: 17px !important;
+}
+html[data-rc-enabled] [data-rc-recommendations] {
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(340px, 100%), 1fr)
+  ) !important;
+}
+html[data-rc-enabled]
+  [data-rc-overlay]
+  :is(.friend-tile-game-name, .friend-tile-is-playing) {
+  font-size: 14px !important;
+  line-height: 21px !important;
+  letter-spacing: 0 !important;
+}
+html[data-rc-enabled] [data-rc-overlay] .friend-tile-game-name {
+  font-weight: 650 !important;
+}
+/* Creator keeps every native column, card, table and editor canvas. */
+html[data-rc-enabled][data-rc-site="creator"],
+html[data-rc-enabled][data-rc-site="creator"] body {
+  --mui-palette-background-default: #000;
+  --mui-palette-background-paper: #000;
+  --color-surface-0: #000;
+  --color-surface-100: #000;
+  --color-surface-200: #000;
+}
+html[data-rc-enabled][data-rc-site="creator"]
+  :is(
+    [class*="MuiPaper-root"],
+    [class*="MuiAppBar-root"],
+    [class*="MuiDrawer-paper"],
+    [class*="railContainer"],
+    [class*="pageContainer"],
+    [class*="mainContainer"]
+  ) {
+  background-color: #000 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+html[data-rc-enabled][data-rc-site="creator"]
+  :is([class*="MuiDrawer-paper"], [class*="railContainer"]) {
+  border-color: #ffffff0b !important;
+}
+@media (prefers-reduced-transparency: reduce) {
+  html[data-rc-enabled] :is([data-rc-overlay], #header) {
+    background: #080809 !important;
+  }
+}
+
+html[data-rc-enabled][data-rc-site="creator"]
+  :is([class*="MuiMenu-paper"], [class*="MuiPopover-paper"]):has(
+    [data-rc-overlay]
+  ) {
+  background: transparent !important;
+}
+html[data-rc-enabled][data-rc-site="creator"] [data-rc-overlay] {
+  background: rgb(8 8 11 / var(--rc-glass-tint, 0.38)) !important;
+}
+html[data-rc-enabled][data-rc-site="creator"]:is(
+    [data-rc-glass-off],
+    [data-rc-transparency="reduce"]
+  )
+  [data-rc-overlay] {
+  background: #080809 !important;
+}
+html[data-rc-family="home"] .friends-carousel-tile-experience {
+  font-family: var(--rc-font) !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  font-weight: 550 !important;
+  letter-spacing: 0 !important;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,1405 @@
+/* Player foundations. Scope every layout change to a known native structure. */
+html[data-rc-site="player"][data-rc-enabled]
+  :is(.wrap, .container-main, #content, #theme-background, .section) {
+  background-color: transparent !important;
+}
+html[data-rc-site="player"][data-rc-enabled] #theme-background {
+  background-image: none !important;
+}
+html[data-rc-shell="ready"]
+  :is(
+    #navigation,
+    #left-navigation-container,
+    [data-testid="left-navigation"]
+  ) {
+  display: none !important;
+}
+html[data-rc-shell="ready"] #container-main {
+  margin: 0 !important;
+  width: 100% !important;
+  padding: 88px 0 140px !important;
+  min-height: 100vh;
+}
+html[data-rc-shell="ready"] #content {
+  display: block !important;
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 1960px !important;
+  min-width: 0;
+  margin: 0 auto !important;
+  padding: 20px var(--rc-gutter) 80px !important;
+  float: none !important;
+}
+html[data-rc-enabled]
+  :is(
+    #HomeContainer,
+    .game-home-page-container,
+    .place-list-container,
+    [data-rc-home-flow]
+  ) {
+  width: 100% !important;
+  min-width: 0;
+  max-width: 100%;
+}
+html[data-rc-enabled] :is(#user-account, #avatar-web-app, #game-detail-page) {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+}
+html[data-rc-shell="ready"] #header {
+  height: 70px !important;
+  min-height: 70px !important;
+  background: #08080acc !important;
+  border-bottom: 1px solid #ffffff0a !important;
+  backdrop-filter: blur(28px) saturate(140%);
+  box-shadow: none !important;
+  z-index: 1030 !important;
+}
+html[data-rc-shell="ready"] #header > .container-fluid {
+  display: flex !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  min-height: 70px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--rc-gutter) !important;
+}
+html[data-rc-shell="ready"]
+  #header
+  :is(.rbx-navbar, .navbar-search, #header-menu-icon) {
+  display: none !important;
+}
+html[data-rc-shell="ready"] #header > .container-fluid::before,
+html[data-rc-shell="ready"] #header > .container-fluid::after {
+  display: none !important;
+}
+html[data-rc-shell="ready"] #header .rbx-navbar-header {
+  display: flex !important;
+  align-items: center;
+  flex-shrink: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  max-width: none !important;
+}
+html[data-rc-shell="ready"] #nav-logo-link {
+  display: flex !important;
+  align-items: center;
+  padding: 0 !important;
+  height: 42px !important;
+  width: auto !important;
+}
+html[data-rc-shell="ready"] #nav-logo-link .icon-logo {
+  display: block !important;
+}
+html[data-rc-shell="ready"] #nav-logo-link .icon-logo-r {
+  display: none !important;
+}
+html[data-rc-shell="ready"] #right-navigation-header {
+  float: none !important;
+  width: auto !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0 !important;
+}
+html[data-rc-shell="ready"] #header :is(.navbar-right, .rbx-navbar-right) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 !important;
+  height: auto !important;
+}
+html[data-rc-shell="ready"] #header .rbx-navbar-right > li {
+  padding: 0 5px;
+}
+html[data-rc-shell="ready"] #header .nav-menu-title {
+  font-size: 13px;
+}
+html[data-rc-enabled] [data-rc-main] {
+  color: var(--rc-ink);
+}
+
+/* Artwork fills the whole native card chain, including the legacy 126/150px wrappers. */
+html[data-rc-enabled] [data-rc-grid] {
+  display: grid !important;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(270px, 100%), 1fr)
+  ) !important;
+  gap: 30px 22px !important;
+  padding: 0 !important;
+  margin: 20px 0 40px !important;
+  width: 100% !important;
+  min-width: 0;
+  list-style: none;
+}
+html[data-rc-enabled] [data-rc-grid]::before,
+html[data-rc-enabled] [data-rc-grid]::after {
+  display: none !important;
+}
+html[data-rc-enabled] [data-rc-grid] > :is(li, .list-item, [data-rc-card]) {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+}
+html[data-rc-enabled] [data-rc-card] {
+  width: auto;
+  min-width: 0;
+  height: auto !important;
+  max-width: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transition: transform 0.22s var(--rc-ease);
+}
+html[data-rc-enabled] [data-rc-card]:is(:hover, :focus-within) {
+  transform: translateY(-4px);
+}
+html[data-rc-enabled]
+  [data-rc-card]
+  :is(.game-card-link, .item-card-link, .item-card-name-link) {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  text-decoration: none;
+}
+html[data-rc-enabled]
+  [data-rc-card]
+  :is(
+    .game-card-thumb-container,
+    .featured-game-icon-container,
+    .item-card-thumb-container,
+    .item-card-thumb,
+    .item-card-thumbnail
+  ) {
+  display: block !important;
+  position: relative;
+  width: 100% !important;
+  height: auto !important;
+  padding: 0 !important;
+  border-radius: var(--rc-radius) !important;
+  background: #17171c;
+  overflow: hidden;
+  isolation: isolate;
+}
+html[data-rc-enabled] [data-rc-ratio="square"] {
+  aspect-ratio: 1 !important;
+}
+html[data-rc-enabled] [data-rc-ratio="wide"] {
+  aspect-ratio: 16/9 !important;
+}
+html[data-rc-enabled]
+  [data-rc-card]
+  :is(
+    .game-card-thumb-container,
+    .featured-game-icon-container,
+    .item-card-thumb-container,
+    .item-card-thumbnail
+  )
+  :is(.thumbnail-2d-container, .thumbnail-span, .item-card-thumb) {
+  display: block !important;
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  float: none !important;
+  border-radius: inherit;
+  overflow: hidden;
+  background: transparent !important;
+}
+html[data-rc-enabled]
+  [data-rc-card]
+  :is(
+    .game-card-thumb-container,
+    .featured-game-icon-container,
+    .item-card-thumb-container,
+    .item-card-thumbnail
+  )
+  img {
+  display: block !important;
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  border-radius: inherit;
+}
+html[data-rc-enabled] [data-rc-card]:is(:hover, :focus-within) [data-rc-media] {
+  box-shadow:
+    0 0 0 1px #ffffff30,
+    0 12px 35px #0008;
+}
+html[data-rc-enabled]
+  [data-rc-card]
+  :is(.game-card-name, .item-card-name, .text-name) {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 2.8em;
+  color: var(--rc-ink) !important;
+  font-size: 16px !important;
+  font-weight: 550 !important;
+  line-height: 1.4 !important;
+  letter-spacing: -0.025em;
+  margin-top: 12px;
+  overflow: hidden;
+}
+html[data-rc-enabled] [data-rc-card] :is(.info-container, .item-card-caption) {
+  width: 100% !important;
+  padding: 0 2px !important;
+  background: transparent !important;
+}
+html[data-rc-enabled] [data-rc-secondary] {
+  color: #a0a0aa !important;
+  font-size: 12px !important;
+  opacity: 0.85;
+}
+html[data-rc-enabled] :is(.ad-label, .sponsored-label) {
+  opacity: 1 !important;
+  color: #c8c8cf !important;
+}
+html[data-rc-enabled] [data-rc-card] .game-card-info {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 22px;
+}
+
+/* A shelf has one viewport. Native giant pixel tracks may grow inside it, never outside it. */
+html[data-rc-family="home"] [data-rc-home-flow] {
+  display: flex;
+  flex-direction: column;
+}
+html[data-rc-family="home"] [data-rc-home-flow] > [data-rc-continue] {
+  order: -2;
+}
+html[data-rc-family="home"] [data-rc-home-flow] > [data-rc-friends] {
+  order: -1;
+}
+html[data-rc-family="home"]
+  :is(.game-sort-carousel-wrapper, .game-sort-container) {
+  width: 100% !important;
+  min-width: 0;
+  margin-bottom: 32px !important;
+}
+html[data-rc-family="home"] .horizontal-scroller {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+  margin: 14px 0 26px !important;
+  padding: 0 !important;
+}
+html[data-rc-family="home"] .horizontal-scroll-window {
+  width: 100% !important;
+  height: auto !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 6px 2px 18px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+html[data-rc-family="home"] .horizontally-scrollable {
+  position: relative !important;
+  left: 0 !important;
+  transform: none !important;
+  width: max-content !important;
+  height: auto !important;
+}
+html[data-rc-family="home"] .home-page-carousel {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  width: max-content !important;
+  height: auto !important;
+  gap: 22px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+html[data-rc-family="home"] .home-page-carousel > li {
+  flex: 0 0 clamp(240px, 19vw, 300px) !important;
+  width: clamp(240px, 19vw, 300px) !important;
+  height: auto !important;
+  scroll-snap-align: start;
+}
+html[data-rc-family="home"]
+  :is(
+    .wide-game-tile-list .home-page-carousel > li,
+    .home-page-carousel > li:has([data-rc-wide])
+  ) {
+  flex-basis: clamp(340px, 28vw, 450px) !important;
+  width: clamp(340px, 28vw, 450px) !important;
+}
+html[data-rc-family="home"] .home-game-grid {
+  display: grid !important;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(340px, 100%), 1fr)
+  ) !important;
+  gap: 30px 22px !important;
+  width: 100% !important;
+  max-height: none !important;
+  padding: 6px 2px 18px !important;
+}
+html[data-rc-family="home"] .horizontal-scroller :is(.scroller, .scroller-new) {
+  display: none !important;
+}
+html[data-rc-enabled] .rc-shelf-container {
+  position: relative;
+  min-width: 0;
+}
+html[data-rc-enabled] .rc-shelf-controls {
+  display: flex;
+  gap: 7px;
+  justify-content: flex-end;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+html[data-rc-enabled] .rc-shelf-controls[hidden] {
+  display: none !important;
+}
+html[data-rc-enabled] .rc-shelf-controls button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #ffffff20;
+  background: #19191deb;
+  color: #eee;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+html[data-rc-enabled] .rc-shelf-controls button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+html[data-rc-family="home"]
+  :is(
+    .container-header,
+    .game-sort-header-container,
+    .home-sort-header-container
+  ) {
+  padding-inline: 0 !important;
+  min-height: 0;
+}
+html[data-rc-family="home"]
+  :is(
+    .container-header h2,
+    .game-sort-header-container .font-header-1,
+    .home-sort-header-container a
+  ) {
+  font-size: 25px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.04em;
+}
+html[data-rc-family="home"] #HomeContainer > .section > .container-header {
+  display: none !important;
+}
+html[data-rc-family="home"] #HomeContainer > .section {
+  padding: 0 !important;
+}
+html[data-rc-enabled] [data-rc-friends] {
+  margin: 12px 0 40px !important;
+}
+html[data-rc-family="home"] [data-rc-friends] h2 {
+  font-size: 21px !important;
+}
+/* Preserve small avatar face piles inside experience cards. */
+html[data-rc-enabled]
+  .game-card-friend-info
+  :is(.avatar-card, .avatar-headshot, .avatar-card-image) {
+  max-width: 32px !important;
+  max-height: 32px !important;
+}
+
+/* Only the leaf tab list receives a material, never its content wrapper or the vertical settings menu. */
+html[data-rc-enabled] [data-rc-tabs] {
+  display: flex !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 46px;
+  padding: 5px !important;
+  margin: 18px 0 24px !important;
+  border: 1px solid var(--rc-line) !important;
+  border-radius: 16px !important;
+  background: #131316 !important;
+}
+html[data-rc-enabled] [data-rc-tabs] > :is(li, [role="tab"]) {
+  flex: 1 0 auto;
+  width: auto !important;
+  min-width: 0;
+  height: auto !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+html[data-rc-enabled] [data-rc-tabs] :is(a, button) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px !important;
+  border: 0 !important;
+  border-radius: 11px !important;
+  background: transparent !important;
+  color: #aaaab4 !important;
+  box-shadow: none !important;
+  white-space: nowrap;
+  font-size: 14px;
+}
+html[data-rc-enabled]
+  [data-rc-tabs]
+  :is(
+    .active > a,
+    .active > button,
+    [aria-selected="true"],
+    a.active,
+    button.active
+  ) {
+  background: #ffffff12 !important;
+  color: white !important;
+  box-shadow: inset 0 1px 0 #ffffff0c !important;
+}
+html[data-rc-enabled] [data-rc-tabs] :is(a, button)::after {
+  display: none !important;
+}
+html[data-rc-enabled] [data-rc-tabs] .rbx-tab-heading .text-lead {
+  color: inherit !important;
+  font-size: 14px !important;
+}
+html[data-rc-enabled] [data-rc-panel] {
+  border-radius: 20px !important;
+  background: #101013 !important;
+  border: 1px solid var(--rc-line) !important;
+  padding: 22px !important;
+  box-shadow: none !important;
+}
+html[data-rc-enabled] :is(.modal-content, .popover-content, .dropdown-menu) {
+  color: var(--rc-ink) !important;
+  background: #19191df7 !important;
+  border: 1px solid #ffffff24 !important;
+  border-radius: 18px !important;
+  box-shadow: 0 25px 90px #0009 !important;
+}
+html[data-rc-enabled] :is(.modal-header, .modal-footer) {
+  border-color: var(--rc-line) !important;
+}
+html[data-rc-enabled]
+  :is(
+    .btn-primary-md,
+    .btn-primary-lg,
+    .btn-growth-md,
+    .btn-growth-lg,
+    [class~="bg-action-emphasis"]
+  ) {
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #f5f5f7 !important;
+  color: #101014 !important;
+  box-shadow: none !important;
+}
+html[data-rc-enabled]
+  :is(
+    .btn-control-md,
+    .btn-control-sm,
+    .btn-secondary-md,
+    .btn-secondary-lg,
+    .btn-control-lg
+  ) {
+  border: 1px solid #ffffff20 !important;
+  background: #1b1b20 !important;
+  color: #f5f5f7 !important;
+  border-radius: 12px !important;
+}
+html[data-rc-enabled] :is(.input-field, .input-dropdown, .form-control) {
+  background-color: #131317 !important;
+  color: #eeeef3 !important;
+  border-color: #ffffff26 !important;
+  border-radius: 12px;
+}
+html[data-rc-enabled]
+  :is(
+    .text-emphasis,
+    .text-label,
+    .text-header,
+    .text-name,
+    .font-header-1,
+    .font-header-2,
+    .font-header-3,
+    .text-lead
+  ) {
+  color: var(--rc-ink) !important;
+}
+html[data-rc-enabled]
+  :is(.text-description, .text-secondary, .text-date-hint, .text-footer-nav) {
+  color: var(--rc-muted) !important;
+}
+html[data-rc-enabled]
+  :is(
+    .section-content,
+    .rbx-tab-content,
+    .tab-pane,
+    .menu-vertical,
+    .tab-horizontal-submenu
+  ) {
+  color: var(--rc-ink);
+}
+
+/* Avatar editor: replace the old fixed-width float layout with separate, contained columns. */
+html[data-rc-family="avatar"] #avatar-react-container {
+  width: 100% !important;
+}
+html[data-rc-family="avatar"] .avatar-editor-header {
+  margin-bottom: 26px;
+  gap: 24px;
+}
+html[data-rc-family="avatar"] .avatar-editor-header h1 {
+  font-size: 32px;
+  letter-spacing: -0.045em;
+}
+html[data-rc-family="avatar"] .avatar-editor-header > div {
+  font-size: 13px;
+  color: #a0a0aa;
+}
+html[data-rc-family="avatar"] .left-wrapper-placeholder {
+  box-sizing: border-box !important;
+  float: left !important;
+  width: 32% !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding-right: 32px;
+}
+html[data-rc-family="avatar"] .left-wrapper {
+  position: sticky !important;
+  top: 96px !important;
+  width: 100% !important;
+  float: none !important;
+}
+html[data-rc-family="avatar"] .right-panel {
+  box-sizing: border-box !important;
+  float: right !important;
+  width: 68% !important;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  clear: none !important;
+}
+html[data-rc-family="avatar"] .right-wrapper-placeholder {
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 0 20px !important;
+}
+html[data-rc-family="avatar"] .right-wrapper {
+  position: relative !important;
+  top: auto !important;
+  float: none !important;
+  width: 100% !important;
+  height: auto !important;
+  min-width: 0;
+  margin: 0 !important;
+}
+html[data-rc-family="avatar"]
+  :is(
+    .avatar-back,
+    .avatar-thumbnail,
+    #UserAvatar,
+    .left-wrapper .section-content
+  ) {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+}
+html[data-rc-family="avatar"] .avatar-thumbnail {
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #111116;
+}
+html[data-rc-family="avatar"] #UserAvatar {
+  aspect-ratio: 1;
+}
+html[data-rc-family="avatar"]
+  #UserAvatar
+  > :is(.thumbnail-2d-container, .thumbnail-3d-container) {
+  width: 100% !important;
+  height: 100% !important;
+}
+html[data-rc-family="avatar"] #UserAvatar :is(img, canvas) {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+html[data-rc-family="avatar"] .tab-wrapper {
+  position: relative !important;
+  top: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 0 22px !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+html[data-rc-family="avatar"] .avatar-tabs-scroller {
+  width: 100% !important;
+  height: auto !important;
+  padding: 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+html[data-rc-family="avatar"] #horizontal-tabs {
+  width: max-content !important;
+  min-width: 100%;
+  margin: 0 !important;
+}
+html[data-rc-family="avatar"] #horizontal-tabs > li {
+  flex: 1 0 auto;
+}
+html[data-rc-family="avatar"] #horizontal-tabs > li :is(a, button) {
+  width: 100%;
+}
+html[data-rc-family="avatar"] .rbx-tab-content {
+  clear: none !important;
+  width: 100% !important;
+  float: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+html[data-rc-family="avatar"] .rbx-tab-content .rbx-tab-content {
+  width: 100% !important;
+  float: none !important;
+}
+html[data-rc-family="avatar"] .item-cards-stackable {
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(210px, 100%), 1fr)
+  ) !important;
+}
+html[data-rc-family="avatar"] .breadcrumb-container {
+  margin: 0 0 18px;
+}
+html[data-rc-family="avatar"] .item-card-container {
+  overflow: visible;
+}
+html[data-rc-family="avatar"] .left-wrapper .section-content {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
+html[data-rc-family="avatar"] .avatar-redraw-wrapper {
+  clear: left;
+  padding-top: 18px;
+  font-size: 13px;
+}
+
+/* Settings: a real sidebar with its own width, a readable form, and no horizontal tab rules. */
+html[data-rc-family="settings"] #user-account {
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+}
+html[data-rc-family="settings"] #react-user-account-base > h1 {
+  margin: 0 0 28px !important;
+  font-size: 36px;
+}
+html[data-rc-family="settings"] #settings-container {
+  display: block !important;
+  width: 100% !important;
+}
+html[data-rc-family="settings"] .settings-left-navigation {
+  display: grid !important;
+  grid-template-columns: 240px minmax(0, 1fr);
+  align-items: start;
+  gap: 32px;
+  width: 100% !important;
+  height: auto !important;
+  position: static !important;
+  float: none !important;
+}
+html[data-rc-family="settings"] .menu-vertical {
+  display: flex !important;
+  flex-direction: column;
+  position: sticky !important;
+  top: 94px;
+  width: 100% !important;
+  height: auto !important;
+  max-height: calc(100dvh - 210px);
+  overflow-y: auto;
+  margin: 0 !important;
+  padding: 8px !important;
+  border: 1px solid #ffffff0f !important;
+  border-radius: 20px !important;
+  background: #101013 !important;
+}
+html[data-rc-family="settings"] .menu-vertical :is(li, .menu-option) {
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+html[data-rc-family="settings"] .menu-vertical a {
+  display: block !important;
+  width: 100% !important;
+  padding: 13px 15px !important;
+  border: 0 !important;
+  border-radius: 12px;
+  color: #acacb6 !important;
+  line-height: 1.35;
+  box-shadow: none !important;
+}
+html[data-rc-family="settings"] .menu-vertical a.active {
+  color: #f5f5f7 !important;
+  background: #ffffff10 !important;
+  box-shadow: inset 0 1px 0 #ffffff0a !important;
+}
+html[data-rc-family="settings"] .menu-vertical :is(a:hover, a:focus-visible) {
+  color: white !important;
+  background: #ffffff08 !important;
+}
+html[data-rc-family="settings"] #settings-container .rbx-tab-content {
+  width: 100% !important;
+  min-width: 0;
+  float: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+html[data-rc-family="settings"] #settings-container .tab-pane {
+  width: 100% !important;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+}
+html[data-rc-family="settings"] .section-content {
+  margin-bottom: 20px !important;
+  background: #101013 !important;
+  border-radius: 18px;
+}
+html[data-rc-family="settings"] :is(.account-settings-row, .settings-row) {
+  border-color: #ffffff12 !important;
+}
+html[data-rc-family="settings"] :is(.text-description, .settings-description) {
+  line-height: 1.6;
+}
+html[data-rc-family="settings"] .mobile-navigation-dropdown {
+  display: none !important;
+}
+
+/* Experience pages keep the native media player and all launch/purchase actions. */
+html[data-rc-family="experience"] #game-detail-page {
+  max-width: 1600px !important;
+  margin: 0 auto !important;
+}
+html[data-rc-family="experience"] .game-main-content {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.8fr) minmax(300px, 1fr);
+  gap: 40px;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 24px 0 40px !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+html[data-rc-family="experience"] .game-main-content::before,
+html[data-rc-family="experience"] .game-main-content::after {
+  display: none !important;
+}
+html[data-rc-family="experience"] #game-details-carousel-container {
+  float: none !important;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16/9;
+  border-radius: 24px !important;
+  overflow: hidden;
+  background: #111116;
+}
+html[data-rc-family="experience"]
+  #game-details-carousel-container
+  :is(
+    [data-testid="carousel"],
+    .carousel-item,
+    .carousel-inner,
+    .video-preview-wrapper,
+    .game-preview-video-container,
+    .video-preview,
+    .carousel-thumb
+  ) {
+  width: 100% !important;
+  height: 100% !important;
+}
+html[data-rc-family="experience"]
+  #game-details-carousel-container
+  :is(img, video, iframe) {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+html[data-rc-family="experience"] .game-calls-to-action {
+  display: flex !important;
+  flex-direction: column;
+  float: none !important;
+  width: 100% !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-width: 0;
+}
+html[data-rc-family="experience"] .game-name {
+  font-size: clamp(34px, 3.7vw, 64px) !important;
+  line-height: 1.04 !important;
+  letter-spacing: -0.055em !important;
+  max-height: none !important;
+  white-space: normal !important;
+  margin: 0 0 16px !important;
+}
+html[data-rc-family="experience"]
+  :is(.game-creator, .game-age-recommendation-details) {
+  color: #b8b8c3;
+  font-size: 14px;
+}
+html[data-rc-family="experience"] .game-title-container {
+  height: auto !important;
+  flex: 1;
+  padding-bottom: 28px;
+}
+html[data-rc-family="experience"]
+  :is(.btn-common-play-game-lg, [data-testid="play-button"]) {
+  background: #0a84ff !important;
+  color: white !important;
+  border: 0 !important;
+  border-radius: 17px !important;
+  min-height: 58px;
+}
+html[data-rc-family="experience"] .icon-common-play {
+  filter: none !important;
+}
+html[data-rc-family="experience"]
+  .game-main-content
+  > :is(
+    #game-details-invite-link-expired-modal-container,
+    #game-details-edp-upsell-container
+  ):empty {
+  display: none;
+}
+html[data-rc-family="experience"] .favorite-follow-vote-share {
+  margin: 15px 0 0 !important;
+}
+html[data-rc-family="experience"] #game-detail-page > .rbx-tabs-horizontal {
+  width: 100% !important;
+  padding: 0 !important;
+}
+html[data-rc-family="experience"] .game-description {
+  max-width: 900px;
+  line-height: 1.75;
+  color: #b8b8c3;
+}
+html[data-rc-family="experience"] .rbx-game-server-list {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+html[data-rc-family="experience"] .rbx-game-server-item {
+  transform: none !important;
+  padding: 22px !important;
+  background: #111115 !important;
+  border: 1px solid #ffffff12 !important;
+  border-radius: 20px !important;
+}
+html[data-rc-family="experience"] .game-stat-container {
+  padding-block: 22px;
+  border-color: #ffffff12 !important;
+}
+
+/* Remaining page families share the same materials without disturbing reading/workflow layouts. */
+html[data-rc-family="marketplace"]
+  :is(.catalog-header, .catalog-filters, .catalog-results) {
+  background: transparent !important;
+}
+html[data-rc-family="marketplace"] .catalog-item-container {
+  width: 100% !important;
+}
+html[data-rc-family="item"]
+  :is(.item-details-thumbnail-container, .item-thumbnail-container) {
+  background: radial-gradient(ellipse at center, #1c1c23, #08080a) !important;
+  border-radius: 26px !important;
+  overflow: hidden;
+}
+html[data-rc-family="profile"] .currently-wearing-avatar-with-background {
+  height: clamp(360px, 52vh, 620px) !important;
+  border-radius: 26px;
+  overflow: hidden;
+  background: #08080b;
+}
+html[data-rc-family="profile"] .profile-avatar-left {
+  width: 100% !important;
+  height: 100% !important;
+}
+html[data-rc-family="profile"] .user-profile-header {
+  padding-block: 25px !important;
+}
+html[data-rc-family="profile"] #user-profile-header-bg {
+  background: transparent !important;
+}
+html[data-rc-family="people"] .friends-list {
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+}
+html[data-rc-family="people"] :is(.friend-card, .avatar-card-container) {
+  background: #101013 !important;
+  padding: 20px !important;
+  border-radius: 20px !important;
+}
+html[data-rc-family="community"]
+  :is(.group-header, .group-wall, .group-details) {
+  border-radius: 20px;
+}
+html[data-rc-family="finance"] :is(table, .table) {
+  width: 100%;
+  background: #101013;
+  border-radius: 18px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+}
+html[data-rc-family="finance"] :is(th, td) {
+  padding: 16px !important;
+  border-color: #ffffff12 !important;
+  color: inherit;
+}
+html[data-rc-family="auth"]
+  :is(.login-container, .signup-container, .password-reset-container) {
+  background: #101013 !important;
+  padding: 36px !important;
+  border: 1px solid #ffffff12;
+  border-radius: 26px !important;
+}
+html[data-rc-enabled] #chat-container {
+  z-index: 1035 !important;
+}
+html[data-rc-shell="ready"] .footer-container {
+  margin-left: 0 !important;
+  padding-bottom: 100px;
+  background: transparent !important;
+}
+html[data-rc-enabled][data-rc-transparency="reduce"] #header {
+  background: #09090b !important;
+  backdrop-filter: none !important;
+}
+html[data-rc-enabled][data-rc-transparency="reduce"]
+  :is(.modal-content, .popover-content, .dropdown-menu) {
+  background: #19191d !important;
+}
+@media (prefers-reduced-transparency: reduce) {
+  html[data-rc-enabled] #header {
+    background: #09090b !important;
+    backdrop-filter: none !important;
+  }
+}
+@media (max-width: 1100px) {
+  html[data-rc-family="avatar"] .left-wrapper-placeholder {
+    width: 36% !important;
+    padding-right: 24px;
+  }
+  html[data-rc-family="avatar"] .right-panel {
+    width: 64% !important;
+  }
+  html[data-rc-family="avatar"] .item-cards-stackable {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+  }
+  html[data-rc-family="experience"] .game-main-content {
+    gap: 24px;
+    grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr);
+  }
+}
+@media (max-width: 800px) {
+  html[data-rc-enabled] [data-rc-grid] {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(min(190px, 100%), 1fr)
+    ) !important;
+    gap: 24px 16px !important;
+  }
+  html[data-rc-family="settings"] .settings-left-navigation {
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 20px;
+  }
+  html[data-rc-family="settings"] .menu-vertical a {
+    padding: 12px !important;
+    font-size: 13px;
+  }
+  html[data-rc-family="experience"] .game-main-content {
+    grid-template-columns: 1fr;
+  }
+  html[data-rc-family="experience"] .game-title-container {
+    padding-top: 5px;
+  }
+  html[data-rc-shell="ready"]
+    #header
+    :is(.nav-menu-title, .rbx-navbar-right > li:first-child) {
+    display: none;
+  }
+  html[data-rc-enabled] [data-rc-tabs] {
+    overflow-x: auto;
+  }
+}
+@media (max-width: 600px) {
+  html[data-rc-family="settings"] .settings-left-navigation {
+    display: block !important;
+  }
+  html[data-rc-family="settings"] .settings-left-navigation {
+    position: static;
+    margin-bottom: 24px;
+  }
+  html[data-rc-family="settings"] .menu-vertical {
+    max-height: 190px;
+  }
+  html[data-rc-family="avatar"]
+    :is(
+      .left-wrapper-placeholder,
+      .right-panel,
+      .right-wrapper,
+      .rbx-tab-content
+    ) {
+    width: 100% !important;
+    float: none !important;
+  }
+  html[data-rc-family="avatar"] .left-wrapper-placeholder {
+    padding: 0;
+    margin-bottom: 24px !important;
+  }
+  html[data-rc-family="avatar"] .left-wrapper {
+    position: static !important;
+  }
+  html[data-rc-family="avatar"] .avatar-thumbnail {
+    max-width: 380px !important;
+    margin: auto !important;
+  }
+  html[data-rc-family="avatar"] .avatar-editor-header > div > span {
+    display: none;
+  }
+}
+
+/* Marketplace controls form a quiet, contained masthead instead of stacked gray bars. */
+html[data-rc-family="marketplace"] .catalog-header {
+  z-index: 1020 !important;
+  border-radius: 20px;
+  background: #08080af5 !important;
+  border: 1px solid #ffffff0b;
+  padding: 20px 22px 14px !important;
+  backdrop-filter: blur(24px);
+  margin-bottom: 28px;
+}
+html[data-rc-family="marketplace"]
+  :is(
+    .search-bars,
+    .search-bar-placement-right,
+    .keyword-suggestion-container,
+    .topic-carousel,
+    .topic-container
+  ) {
+  background: transparent !important;
+}
+html[data-rc-family="marketplace"] .heading {
+  font-size: 36px !important;
+  letter-spacing: -0.045em;
+}
+html[data-rc-family="marketplace"] .heading a {
+  color: #f5f5f7 !important;
+}
+html[data-rc-family="marketplace"] .filter-select {
+  min-height: 36px;
+  border-radius: 20px !important;
+  padding-inline: 15px;
+  background: #1b1b20 !important;
+  font-size: 13px;
+}
+html[data-rc-family="marketplace"] .topic-container {
+  background: transparent !important;
+}
+html[data-rc-enabled][data-rc-transparency="reduce"] .catalog-header {
+  backdrop-filter: none !important;
+  background: #08080a !important;
+}
+
+html[data-rc-family="experience"] #game-detail-page {
+  position: relative;
+  isolation: isolate;
+}
+html[data-rc-family="experience"] #game-detail-page[data-rc-artwork]::before {
+  content: "";
+  display: block;
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+  inset: -30px calc(-1 * var(--rc-gutter)) auto;
+  height: 700px;
+  opacity: 0.3;
+  background:
+    linear-gradient(90deg, #000b, #0004),
+    var(--rc-artwork) center/cover no-repeat;
+  mask-image: linear-gradient(#000, transparent 95%);
+  filter: blur(30px);
+}
+/* Profile viewer uses an independent thumbnail holder; scale the complete stage. */
+html[data-rc-family="profile"] .profile-avatar-left {
+  position: relative !important;
+  margin: 0 !important;
+}
+html[data-rc-family="profile"]
+  .profile-avatar-left
+  :is(.thumbnail-holder, .avatar-thumbnail-container, .thumbnail-2d-container) {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html[data-rc-family="profile"] .profile-avatar-left img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+/* Never override framework visibility when applying grid/flex layouts. */
+html[data-rc-enabled] :is([hidden], .ng-hide, .hidden, .hide) {
+  display: none !important;
+}
+html[data-rc-site="player"][data-rc-enabled] .menu-vertical {
+  background: #101013 !important;
+  border: 1px solid #ffffff10;
+  border-radius: 18px;
+  padding: 8px;
+}
+html[data-rc-site="player"][data-rc-enabled] .menu-vertical .menu-option {
+  background: transparent !important;
+  border: 0 !important;
+}
+html[data-rc-site="player"][data-rc-enabled]
+  .menu-vertical
+  .menu-option-content {
+  border-radius: 10px;
+  color: #b8b8c2 !important;
+}
+html[data-rc-site="player"][data-rc-enabled]
+  .menu-vertical
+  .menu-option-content:is(.active, :hover) {
+  background: #ffffff0e !important;
+  color: white !important;
+  box-shadow: none !important;
+}
+/* Native Angular experience wrappers must also expand inside their grid cell. */
+html[data-rc-enabled] [data-rc-grid] > li > :is(.game-card, .item-card) {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+/* Communities has a separate fixed navigation rail, independent of Roblox's global rail. */
+html[data-rc-family="community"] .group-details-container-desktop-and-tablet {
+  position: relative !important;
+  width: 100% !important;
+  min-height: calc(100vh - 240px);
+}
+html[data-rc-family="community"] .groups-list-sidebar {
+  position: absolute !important;
+  top: 0 !important;
+  bottom: auto !important;
+  left: 0 !important;
+  width: 260px !important;
+  height: auto !important;
+  max-height: calc(100dvh - 220px);
+  overflow: auto;
+  padding: 18px !important;
+  background: #101013 !important;
+  border: 1px solid #ffffff10;
+  border-radius: 20px;
+}
+html[data-rc-family="community"] .groups-list-new {
+  width: 100% !important;
+  height: auto !important;
+}
+html[data-rc-family="community"]
+  .group-details-container-desktop-and-tablet.new-list
+  > .group-details {
+  width: calc(100% - 292px) !important;
+  max-width: none !important;
+  margin: 0 0 0 292px !important;
+  float: none !important;
+  padding: 0 !important;
+}
+html[data-rc-family="community"]
+  .group-details
+  :is(.group-games, .group-header, .rbx-tabs-horizontal, .section) {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+}
+html[data-rc-family="community"] .groups-list-heading {
+  font-size: 20px !important;
+}
+html[data-rc-family="community"] .group-details .group-games {
+  padding: 0 !important;
+}
+@media (max-width: 1000px) {
+  html[data-rc-family="community"] .groups-list-sidebar {
+    position: relative !important;
+    width: 100% !important;
+    max-height: 200px;
+    margin-bottom: 24px;
+  }
+  html[data-rc-family="community"]
+    .group-details-container-desktop-and-tablet.new-list
+    > .group-details {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+}
+/* SDUI cards retain their native virtualized children and link handlers. */
+html[data-rc-site="player"][data-rc-enabled] .sdui-tile-image-container {
+  border-radius: 20px !important;
+  overflow: hidden;
+  background: #111;
+}
+html[data-rc-site="player"][data-rc-enabled] .sdui-tile-image-container img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+html[data-rc-site="player"][data-rc-enabled]
+  .sdui-game-tile-primary
+  > [data-sdui-text] {
+  font-size: 16px !important;
+  line-height: 1.45 !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+}
+html[data-rc-site="player"][data-rc-enabled]
+  [data-testid="sdui-tile-footer-content"]
+  [data-sdui-text] {
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+}
+html[data-rc-site="player"][data-rc-enabled] [data-testid="section-header"] h2 {
+  font-size: 25px !important;
+}
+html[data-rc-family="profile"]
+  [class$="-carouselItem"]:has(.profile-item-card) {
+  flex: 0 0 250px !important;
+  width: 250px !important;
+}
+html[data-rc-family="profile"] [class$="-carousel"]:has(.profile-item-card) {
+  gap: 22px !important;
+  overflow-x: auto !important;
+  padding-block: 6px 18px;
+  scrollbar-width: none;
+}
+html[data-rc-family="profile"] .profile-item-card {
+  width: 100% !important;
+  margin: 0 !important;
+}
+/* Current product recommendations use item-list wrappers, not the catalog's UL. */
+html[data-rc-enabled] .item-list-cards {
+  display: flex !important;
+  gap: 22px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 6px 2px 20px !important;
+  scrollbar-width: thin;
+}
+html[data-rc-enabled] .item-list-item-card {
+  flex: 0 0 250px !important;
+  width: 250px !important;
+}
+html[data-rc-enabled] .item-list-item-card .grid-item-container {
+  width: 100% !important;
+  height: auto !important;
+  padding: 0 !important;
+}
+html[data-rc-family="item"] .item-list-container {
+  background: transparent !important;
+  padding: 0 !important;
+}
+html[data-rc-family="item"] #item-details-container .page-content {
+  width: 100% !important;
+  max-width: 1400px !important;
+  margin-inline: auto !important;
+}
+html[data-rc-family="item"]
+  .clearfix:has(> #item-thumbnail-container-frontend) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 32px;
+}
+html[data-rc-family="item"]
+  .clearfix:has(> #item-thumbnail-container-frontend)::before,
+html[data-rc-family="item"]
+  .clearfix:has(> #item-thumbnail-container-frontend)::after {
+  display: none !important;
+}
+html[data-rc-family="item"]
+  :is(
+    #item-thumbnail-container-frontend,
+    #item-info-container-frontend,
+    .item-details-info-content,
+    #item-details
+  ) {
+  width: 100% !important;
+  min-width: 0;
+  float: none !important;
+  margin-inline: 0 !important;
+}
+html[data-rc-family="item"] .item-details-thumbnail-container {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1;
+}
+html[data-rc-family="item"]
+  .item-details-thumbnail-container
+  :is(.thumbnail-holder, .thumbnail-span, .thumbnail-2d-container) {
+  width: 100% !important;
+  height: 100% !important;
+}
+html[data-rc-family="item"] .item-details-thumbnail-container img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+html[data-rc-family="item"] .item-details-name-row h1 {
+  font-size: clamp(30px, 3vw, 44px) !important;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+}
+@media (max-width: 800px) {
+  html[data-rc-family="item"]
+    .clearfix:has(> #item-thumbnail-container-frontend) {
+    grid-template-columns: 1fr;
+  }
+}
+html[data-rc-family="messages"] .private-message-row {
+  background: #101013 !important;
+  border-color: #ffffff0e !important;
+}
+html[data-rc-family="messages"] .private-message-row:hover {
+  background: #1a1a20 !important;
+}
+
+html[data-rc-family="community"] .groups-list-sidebar {
+  overflow-x: hidden !important;
+  scrollbar-width: thin;
+}
+/* Visibility must win even when a later adapter adds a stronger display rule. */
+html[data-rc-enabled] #content :is([hidden], .ng-hide, .hidden, .hide) {
+  display: none !important;
+}
+/* Native feedback is pre-mounted above the window; hide only its inactive state.
+   The .on class is Roblox's own visibility state, so active warnings remain visible. */
+html[data-rc-enabled] .alert-system-feedback .alert:not(.on) {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Unmodified liquid-glass-react reference</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background: repeating-linear-gradient(
+          45deg,
+          #f04 0 12px,
+          #2d7 12px 24px,
+          #26f 24px 36px
+        );
+      }
+      #reference .relative {
+        position: relative;
+      }
+      #reference * {
+        transition: none !important;
+        animation: none !important;
+      }
+      #reference .pointer-events-none {
+        pointer-events: none;
+      }
+      #reference .opacity-0 {
+        opacity: 0;
+      }
+      #reference .opacity-20 {
+        opacity: 0.2;
+      }
+      #reference .opacity-100 {
+        opacity: 1;
+      }
+      #reference .bg-black {
+        background: black;
+      }
+      #reference .mix-blend-overlay {
+        mix-blend-mode: overlay;
+      }
+      #reference .glass {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="reference"></div>
+    <script type="module">
+      import { createElement } from "react";
+      import { createRoot } from "react-dom/client";
+      import LiquidGlass from "liquid-glass-react";
+      createRoot(document.querySelector("#reference")).render(
+        createElement(LiquidGlass, {
+          mode: "standard",
+          displacementScale: 100,
+          blurAmount: 0.5,
+          saturation: 140,
+          aberrationIntensity: 2,
+          elasticity: 0,
+          cornerRadius: 32,
+          padding: "0px",
+          globalMousePos: { x: 0, y: 0 },
+          mouseOffset: { x: 0, y: 0 },
+          style: {
+            position: "fixed",
+            left: 416,
+            top: 298,
+            width: 352,
+            height: 236,
+          },
+          children: createElement("span", {
+            style: { display: "block", width: 352, height: 236 },
+          }),
+        }),
+      );
+    </script>
+  </body>
+</html>

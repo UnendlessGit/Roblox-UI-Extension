@@ -1,0 +1,155 @@
+/* Site adapters keep functional rails, editor canvases, charts and article structure intact. */
+html[data-rc-enabled][data-rc-site="creator"] {
+  --mui-palette-background-default: #000;
+  --mui-palette-background-paper: #121215;
+  --mui-palette-text-primary: #f5f5f7;
+  --mui-palette-text-secondary: #b0b0b9;
+  --mui-palette-divider: #ffffff18;
+}
+html[data-rc-enabled][data-rc-site="creator"]
+  :is(
+    [class*="MuiPaper-root"],
+    [class*="MuiAppBar-root"],
+    [class*="MuiDrawer-paper"]
+  ) {
+  background-color: #111114 !important;
+  color: #f5f5f7 !important;
+  border-color: #ffffff14 !important;
+  background-image: none !important;
+}
+html[data-rc-enabled][data-rc-site="creator"]
+  :is([class*="MuiCard-root"], [class*="MuiDialog-paper"]) {
+  border-radius: 20px !important;
+  box-shadow: 0 15px 50px #0004 !important;
+}
+html[data-rc-enabled][data-rc-site="creator"]
+  :is([class*="MuiInputBase-root"], [class*="MuiOutlinedInput-root"]) {
+  border-radius: 12px !important;
+  color: #f5f5f7 !important;
+}
+html[data-rc-enabled][data-rc-site="creator"]
+  :is([class*="MuiTableCell-root"]) {
+  border-color: #ffffff14 !important;
+  color: inherit;
+}
+html[data-rc-enabled][data-rc-family="docs"]
+  :is(main, article, [class*="docs-content"], [class*="markdown"]) {
+  background: transparent !important;
+  color: #d6d6dd;
+  line-height: 1.75;
+}
+html[data-rc-enabled][data-rc-family="docs"] article {
+  max-width: 900px;
+}
+html[data-rc-enabled][data-rc-family="docs"] :is(pre, code) {
+  background-color: #131318;
+  color: #d7dcec;
+  border-radius: 8px;
+}
+html[data-rc-enabled][data-rc-family="docs"] pre {
+  padding: 22px;
+  border: 1px solid #ffffff12;
+  overflow: auto;
+}
+html[data-rc-enabled][data-rc-site="forum"] {
+  --primary: #e6e6eb;
+  --secondary: #000;
+  --tertiary: #89baff;
+  --header_background: #101013;
+  --header_primary: #f5f5f7;
+  --primary-low: #17171c;
+  --primary-very-low: #0e0e12;
+  --primary-medium: #a2a2ac;
+  --primary-high: #d5d5dd;
+  --primary-very-high: #ebebf0;
+  --d-content-background: #000;
+  --d-sidebar-background: #08080b;
+}
+html[data-rc-enabled][data-rc-site="forum"]
+  :is(
+    .d-header,
+    .sidebar-wrapper,
+    .topic-body,
+    .topic-avatar,
+    .topic-list-item
+  ) {
+  background-color: transparent;
+  border-color: #ffffff14;
+}
+html[data-rc-enabled][data-rc-site="forum"] .d-header {
+  background: #101013;
+  box-shadow: none;
+  border-bottom: 1px solid #ffffff12;
+}
+html[data-rc-enabled][data-rc-site="forum"] .cooked {
+  line-height: 1.75;
+  color: #dbdbe2;
+}
+html[data-rc-enabled][data-rc-site="forum"]
+  :is(.d-modal__container, .select-kit-collection, .menu-panel) {
+  background: #18181c;
+  border-radius: 18px;
+}
+html[data-rc-enabled][data-rc-site="help"]
+  :is(
+    .header,
+    .footer,
+    .article-container,
+    .article-sidebar,
+    .search-full,
+    .search-container,
+    .sub-nav,
+    .blocks-item,
+    .section-tree,
+    .request-form
+  ) {
+  background-color: #0c0c10 !important;
+  color: #dedee5 !important;
+  border-color: #ffffff19 !important;
+}
+html[data-rc-enabled][data-rc-site="help"]
+  :is(.blocks-item, .search, .article-sidebar) {
+  border-radius: 18px;
+}
+html[data-rc-enabled][data-rc-site="help"]
+  :is(
+    .article-body,
+    .article-header,
+    .article-title,
+    .article-info,
+    .breadcrumbs a,
+    .article-list-link,
+    .section-tree-title
+  ) {
+  color: #dedee5 !important;
+}
+html[data-rc-enabled][data-rc-site="help"] .article-body {
+  line-height: 1.8;
+}
+html[data-rc-enabled][data-rc-site="help"] .article-body a {
+  color: #8dbdff;
+}
+html[data-rc-enabled][data-rc-site="help"] .hero {
+  background-color: #08080c;
+  background-blend-mode: luminosity;
+}
+html[data-rc-enabled][data-rc-site="other"] :is(main, [role="main"]) {
+  color: inherit;
+  background-color: #000;
+}
+html[data-rc-enabled][data-rc-site="forum"] {
+  --primary-rgb: 230, 230, 235;
+  --secondary-rgb: 0, 0, 0;
+  --primary-low-mid: #26262d;
+  --primary-low-rgb: 23, 23, 28;
+  --primary-very-low-rgb: 14, 14, 18;
+}
+html[data-rc-enabled][data-rc-site="creator"] [class*="MuiTooltip-tooltip"] {
+  background: #202024 !important;
+  color: #f5f5f7 !important;
+  border: 1px solid #ffffff18;
+  border-radius: 12px !important;
+}
+html[data-rc-enabled][data-rc-site="creator"] [class*="MuiTooltip-arrow"] {
+  color: #202024 !important;
+}

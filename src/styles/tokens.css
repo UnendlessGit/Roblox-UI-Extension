@@ -1,0 +1,150 @@
+html[data-rc-enabled] {
+  --rc-black: #000;
+  --rc-surface: #101013;
+  --rc-raised: #19191d;
+  --rc-ink: #f5f5f7;
+  --rc-muted: #9999a3;
+  --rc-line: #ffffff12;
+  --rc-blue: #78b7ff;
+  --rc-gutter: clamp(24px, 4vw, 88px);
+  --rc-radius: 18px;
+  --rc-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --color-surface-0: #000;
+  --color-surface-100: #101013;
+  --color-surface-200: #19191d;
+  --color-content-emphasis: #f5f5f7;
+  --color-content-default: #d6d6dc;
+  --color-content-muted: #9999a3;
+  color-scheme: dark;
+  background: #000 !important;
+  scroll-padding-top: 85px;
+  scroll-padding-bottom: 120px;
+}
+html[data-rc-enabled] body {
+  background: #000 !important;
+  color: var(--rc-ink) !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+}
+html[data-rc-enabled] :where(h1, h2, h3, h4) {
+  font-family: inherit;
+  letter-spacing: -0.035em;
+  color: var(--rc-ink);
+}
+html[data-rc-enabled] :where(h1) {
+  font-weight: 650;
+}
+html[data-rc-enabled] :where(h2) {
+  font-weight: 600;
+}
+html[data-rc-enabled]
+  :where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--rc-blue) !important;
+  outline-offset: 4px;
+}
+html[data-rc-enabled]
+  :where(
+    input:not(
+      [type="checkbox"],
+      [type="radio"],
+      [type="range"],
+      [type="color"],
+      [type="submit"]
+    ),
+    textarea,
+    select
+  ) {
+  color: var(--rc-ink);
+  background-color: var(--rc-surface);
+  border-color: #ffffff24;
+  border-radius: 12px;
+  accent-color: var(--rc-blue);
+}
+html[data-rc-enabled] :where(input[type="checkbox"], input[type="radio"]) {
+  accent-color: #6aaeff;
+}
+html[data-rc-enabled] ::selection {
+  background: #7cb7ff44;
+  color: #fff;
+}
+html[data-rc-enabled][data-rc-hide-upsells] [data-rc-upsell],
+html[data-rc-enabled][data-rc-hide-sponsored] [data-rc-sponsored] {
+  display: none !important;
+}
+html[data-rc-enabled][data-rc-motion="reduce"] *,
+html[data-rc-enabled][data-rc-motion="reduce"] *::before,
+html[data-rc-enabled][data-rc-motion="reduce"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-rc-enabled] *,
+  html[data-rc-enabled] *::before,
+  html[data-rc-enabled] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* Roblox's .dark-theme on body redeclares these tokens; root-only values do not reach native components. */
+html[data-rc-enabled] body {
+  --color-surface-0: #000;
+  --color-surface-100: #101013;
+  --color-surface-200: #19191d;
+  --color-surface-300: #242429;
+  --color-content-emphasis: #f5f5f7;
+  --color-content-default: #d6d6dc;
+  --color-content-muted: #9999a3;
+}
+/* Builder and Foundation utility classes otherwise override the macOS text face. */
+html[data-rc-enabled] {
+  --rc-font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+}
+html[data-rc-enabled]
+  :is(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    p,
+    a,
+    button,
+    input,
+    select,
+    textarea,
+    label,
+    th,
+    td,
+    .builder-font,
+    [class*="font-header"],
+    [class*="font-body"],
+    [class*="textOverride"],
+    [class*="Text"],
+    .game-card-name,
+    .friends-carousel-display-name,
+    .info-label
+  ) {
+  font-family: var(--rc-font) !important;
+}
+html[data-rc-enabled] :is(pre, code, kbd, samp) {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
+}
+@media (prefers-reduced-transparency: reduce) {
+  html[data-rc-enabled] .rc-glass-layer {
+    display: none !important;
+  }
+}
+html[data-rc-enabled]
+  :is(
+    [class*="text-body-"],
+    [class*="text-title-"],
+    [class*="text-label-"],
+    [class*="text-caption-"]
+  ) {
+  font-family: var(--rc-font) !important;
+}

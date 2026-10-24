@@ -1,0 +1,63 @@
+{
+  "square": [
+    {
+      "title": "Sample Adventure"
+    },
+    {
+      "title": "Sky Islands"
+    },
+    {
+      "title": "Circuit Sprint"
+    },
+    {
+      "title": "Moon Garden"
+    },
+    {
+      "title": "Block Workshop"
+    },
+    {
+      "title": "Ocean Quest"
+    },
+    {
+      "title": "Forest Trail"
+    },
+    {
+      "title": "Puzzle Rooms"
+    },
+    {
+      "title": "City Builder"
+    },
+    {
+      "title": "Cloud Castle"
+    }
+  ],
+  "wide": [
+    {
+      "title": "Explore Together"
+    },
+    {
+      "title": "Create Your World"
+    },
+    {
+      "title": "Next Horizon"
+    },
+    {
+      "title": "Island Escape"
+    },
+    {
+      "title": "Space Station"
+    },
+    {
+      "title": "Mountain Run"
+    },
+    {
+      "title": "Quiet Valley"
+    },
+    {
+      "title": "Pixel Playground"
+    },
+    {
+      "title": "Night Drive"
+    }
+  ]
+}
