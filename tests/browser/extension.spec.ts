@@ -32,8 +32,8 @@ test.beforeAll(async ({}, testInfo) => {
       : "chromium",
     executablePath: testInfo.project.use.launchOptions?.executablePath,
     args: [
-      `--disable-extensions-except=${resolve("dist")}`,
-      `--load-extension=${resolve("dist")}`,
+      `--disable-extensions-except=${resolve(process.env.RC_EXTENSION_DIR || "dist")}`,
+      `--load-extension=${resolve(process.env.RC_EXTENSION_DIR || "dist")}`,
     ],
     ignoreDefaultArgs: ["--disable-extensions"],
     viewport: { width: 1440, height: 1000 },
@@ -2566,13 +2566,11 @@ test("wallpapers keep independent local copies, a persistent gallery, frosted co
     body: await home.screenshot(),
     contentType: "image/png",
   });
-  await settings
-    .getByLabel("Import Home wallpaper")
-    .setInputFiles({
-      name: "invalid.png",
-      mimeType: "image/png",
-      buffer: Buffer.from("not an image"),
-    });
+  await settings.getByLabel("Import Home wallpaper").setInputFiles({
+    name: "invalid.png",
+    mimeType: "image/png",
+    buffer: Buffer.from("not an image"),
+  });
   await expect(settings.locator(".wallpaper-status")).toContainText(
     "couldn’t be opened",
   );
@@ -2594,13 +2592,11 @@ test("wallpapers keep independent local copies, a persistent gallery, frosted co
   await expect(
     settings.getByRole("button", { name: /Use wallpaper/ }),
   ).toHaveCount(1);
-  await settings
-    .getByLabel("Import Home wallpaper")
-    .setInputFiles({
-      name: "large-original.png",
-      mimeType: "image/png",
-      buffer: large,
-    });
+  await settings.getByLabel("Import Home wallpaper").setInputFiles({
+    name: "large-original.png",
+    mimeType: "image/png",
+    buffer: large,
+  });
   await expect(
     settings.getByRole("alertdialog", { name: "Large wallpaper image" }),
   ).toBeVisible();

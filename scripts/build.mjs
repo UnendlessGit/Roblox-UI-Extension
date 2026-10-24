@@ -6,6 +6,8 @@ const { values } = parseArgs({
   options: {
     development: { type: "boolean", default: false },
     "development-test": { type: "boolean", default: false },
+    validation: { type: "boolean", default: false },
+    "replace-development": { type: "boolean", default: false },
     "build-id": { type: "string" },
   },
 });
@@ -14,7 +16,22 @@ const outDir = values["development-test"]
   ? ".cinema-dev/test-build"
   : development
     ? ".cinema-dev/build"
-    : "dist";
+    : values.validation
+      ? ".cinema-dev/release-check"
+      : "dist";
+if (development && values.validation)
+  throw new Error("Choose a development or validation build, not both.");
+if (!development && !values.validation && !values["replace-development"]) {
+  try {
+    const installed = JSON.parse(await readFile("dist/manifest.json", "utf8"));
+    if (installed.version_name?.includes("development"))
+      throw new Error(
+        "Keep the active development build intact: use npm run check:development. To switch intentionally, stop the watcher and run npm run build -- --replace-development.",
+      );
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
+}
 const buildId = values["build-id"] || new Date().toISOString();
 let devEndpoint = "";
 if (development) {
@@ -206,5 +223,5 @@ if (!development)
 console.log(
   development
     ? "Development build complete."
-    : "Built dist/ (load unpacked) and design-preview/ (reference-based preview).",
+    : `Built ${outDir}/ (load unpacked) and design-preview/ (reference-based preview).`,
 );

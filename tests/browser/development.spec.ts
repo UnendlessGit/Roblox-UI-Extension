@@ -153,12 +153,18 @@ test("development builds reload the extension and Roblox pages automatically, pr
     await expect(page.locator("html")).toHaveAttribute("data-rc-build", third, {
       timeout: 20000,
     });
-    const production = JSON.parse(await readFile("dist/manifest.json", "utf8"));
+    const productionDirectory = process.env.RC_EXTENSION_DIR || "dist";
+    const production = JSON.parse(
+      await readFile(join(productionDirectory, "manifest.json"), "utf8"),
+    );
     expect(production.version_name).toBeUndefined();
     expect(production.host_permissions).not.toContain(
       `http://127.0.0.1:${port}/*`,
     );
-    const productionWorker = await readFile("dist/background.js", "utf8");
+    const productionWorker = await readFile(
+      join(productionDirectory, "background.js"),
+      "utf8",
+    );
     expect(productionWorker).not.toContain("cinema-development-page");
     expect(productionWorker).not.toContain(token);
   } finally {

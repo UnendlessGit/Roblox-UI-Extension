@@ -14,6 +14,7 @@
     "test:unit": "vitest run",
     "test:browser": "playwright test tests/browser/extension.spec.ts",
     "check": "npm run typecheck && npm run build && npm test",
+    "check:development": "npm run typecheck && node scripts/build.mjs --validation && RC_EXTENSION_DIR=.cinema-dev/release-check npm test && npm run test:preview && npm run test:tooling && RC_EXTENSION_DIR=.cinema-dev/release-check npm run test:development && python3 -m unittest discover -s tests -p 'test_package.py' && node scripts/check-publication.mjs --directory .cinema-dev/release-check",
     "preview": "vite --host 127.0.0.1 --open /preview.html",
     "test:preview": "playwright test tests/browser/preview.spec.ts"
   },

@@ -14,7 +14,9 @@ The command typechecks and builds into a staging directory, then replaces `dist/
 
 The helper binds only to `127.0.0.1`, authenticates an extension-origin WebSocket with a local session token, and sends build IDs rather than executable code. It serves no source files or images. Its private session lives in the ignored `.cinema-dev/` directory. Restarting the watcher reuses this session. `RC_DEV_PORT` changes the port if needed; changing the port/session requires one manual reload.
 
-`npm run build` produces the ordinary release build and removes the helper from `dist/`. Stop the development watcher before doing a release build or running production browser tests, and restart it afterwards to resume development. Development integration tests use their own staging/session files and a temporary browser profile.
+Use `npm run check:development` while developing. It builds production code into `.cinema-dev/release-check`, then runs production, preview, tooling, reload, packaging and publication checks without replacing the installed development build. Development integration tests use their own staging/session files and a temporary browser profile.
+
+On a fresh checkout, `npm run build` produces the ordinary release build in `dist/`. It refuses to overwrite an existing development installation. To switch intentionally to a release, stop the watcher and run `npm run build -- --replace-development`. For store packaging during development, use `python3 scripts/package.py --build-dir .cinema-dev/release-check --store` after validation.
 
 There is one initial manual activation because an already-installed release cannot execute helper code that is not in its loaded build. Development reloads use Chrome's [documented runtime API](https://developer.chrome.com/docs/extensions/reference/api/runtime#method-reload).
 

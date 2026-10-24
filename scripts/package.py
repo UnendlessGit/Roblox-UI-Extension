@@ -54,6 +54,7 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--store', action='store_true', help='Put manifest.json at the ZIP root for Web Store upload')
+    parser.add_argument('--build-dir', default='dist', help='Production build directory, relative to the repository')
     args = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
-    print(package(root/'dist', root/'artifacts', store=args.store))
+    print(package(root/args.build_dir, root/'artifacts', store=args.store))
