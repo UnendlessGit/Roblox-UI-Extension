@@ -26,6 +26,7 @@ The staged-file publication check requires a Git checkout with its index populat
 - Wallpaper checks: pure-black default, independent copies after the source file is deleted, persistence across reloads, gallery selection/deletion, original-copy removal, background-only blur and surroundings, reduced transparency, bounded desktop/narrow layouts, saved controls, malformed image errors, import cancellation, large-file proceed/compress choices and resizing an 8K-wide source.
 - Preview checks: fictional sample pages, original local SVGs, responsive layouts, search destinations, native-style interactions and preferences.
 - Packaging checks: an exact 18-file release allowlist; unexpected files and symlinks fail before creating an archive.
+- Update checks: authenticated loopback reload messages, real unpacked extension/page reloads with persistent settings and watcher restart, release-helper exclusion, root-manifest store ZIPs, mocked Web Store upload/review outcomes, duplicate-version skipping and credential-safe errors. Store publication remains disabled until its account/listing/Actions configuration is supplied.
 - Publication checks: exact staged bytes, common credential signatures, excluded/private paths, unapproved bitmaps and optional local private markers. Built distributions are scanned separately.
 
 ## Limits

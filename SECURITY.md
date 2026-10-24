@@ -16,6 +16,7 @@ Version 0.6.0 adds a local wallpaper gallery. Selected raster images are decoded
 
 ## Release safeguards
 
+- Local development reloads are compiled only by `npm run dev:extension`. The helper binds to loopback, requires an extension origin and private session token, and exchanges build IDs rather than executable code. Its session directory is ignored and forbidden by publication checks. Release bundles omit the helper; packaging rejects development manifests. Automatic Web Store publication is opt-in, restricted to validated pushes to `main`, and uses Actions secrets only during the publishing step. See [the update workflow](docs/UPDATES.md).
 - The README gallery contains four user-supplied screenshots explicitly approved for public display. Their visible contents and full resolution are preserved; embedded screenshot metadata is removed. Only their exact reviewed file hashes are allowed by the source publication checker. These documentation images are excluded from the extension and preview builds; other signed-in QA evidence remains private.
 - The packager requires its explicit 18-file distribution allowlist, including exactly one options script and stylesheet; extra files or symlinks fail the release.
 - The publication checker reads exact staged bytes and rejects private directories, common credentials, unapproved bitmaps and unreviewed binaries. Optional private markers can be supplied locally without committing them.

@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "dev:extension": "node scripts/dev-extension.mjs",
+    "test:development": "playwright test tests/browser/development.spec.ts",
+    "test:tooling": "node --test tests/tooling/*.test.mjs",
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run && npm run test:browser",
@@ -30,6 +33,7 @@
     "prettier": "^3.9.10",
     "typescript": "^5.9.3",
     "vite": "^8.0.0",
-    "vitest": "^4.0.0"
+    "vitest": "^4.0.0",
+    "ws": "^8.22.0"
   }
 }

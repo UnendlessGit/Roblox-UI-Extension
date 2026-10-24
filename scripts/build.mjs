@@ -1,7 +1,41 @@
 import { build } from "vite";
 import { mkdir, readFile, writeFile, copyFile } from "node:fs/promises";
 import { deflateSync } from "node:zlib";
-const buildId = new Date().toISOString();
+import { parseArgs } from "node:util";
+const { values } = parseArgs({
+  options: {
+    development: { type: "boolean", default: false },
+    "development-test": { type: "boolean", default: false },
+    "build-id": { type: "string" },
+  },
+});
+const development = values.development || values["development-test"];
+const outDir = values["development-test"]
+  ? ".cinema-dev/test-build"
+  : development
+    ? ".cinema-dev/build"
+    : "dist";
+const buildId = values["build-id"] || new Date().toISOString();
+let devEndpoint = "";
+if (development) {
+  const config = JSON.parse(
+    await readFile(
+      values["development-test"]
+        ? ".cinema-dev/test-session.json"
+        : ".cinema-dev/session.json",
+      "utf8",
+    ),
+  );
+  if (
+    !Number.isInteger(config.port) ||
+    config.port < 1024 ||
+    config.port > 65535 ||
+    !/^[a-f0-9]{64}$/.test(config.token) ||
+    !/^[a-f0-9-]{36}$/.test(buildId)
+  )
+    throw new Error("Start development builds with npm run dev:extension.");
+  devEndpoint = `ws://127.0.0.1:${config.port}/reload?token=${config.token}`;
+}
 const shared = {
   configFile: false,
   publicDir: false,
@@ -9,6 +43,7 @@ const shared = {
   define: {
     __RC_EXTENSION__: false,
     __RC_BUILD__: JSON.stringify(buildId),
+    __RC_DEV_ENDPOINT__: JSON.stringify(devEndpoint),
     "process.env.NODE_ENV": JSON.stringify("production"),
   },
 };
@@ -17,10 +52,11 @@ await build({
   define: {
     __RC_EXTENSION__: true,
     __RC_BUILD__: JSON.stringify(buildId),
+    __RC_DEV_ENDPOINT__: JSON.stringify(devEndpoint),
     "process.env.NODE_ENV": JSON.stringify("production"),
   },
   build: {
-    outDir: "dist",
+    outDir,
     emptyOutDir: true,
     lib: {
       entry: "src/content/index.ts",
@@ -34,7 +70,7 @@ await build({
 await build({
   ...shared,
   build: {
-    outDir: "dist",
+    outDir,
     emptyOutDir: false,
     lib: {
       entry: "src/ui/glass.ts",
@@ -46,7 +82,7 @@ await build({
 await build({
   ...shared,
   build: {
-    outDir: "dist",
+    outDir,
     emptyOutDir: false,
     lib: {
       entry: "src/background.ts",
@@ -58,7 +94,7 @@ await build({
 await build({
   ...shared,
   build: {
-    outDir: "dist",
+    outDir,
     emptyOutDir: false,
     rollupOptions: { input: ["options.html", "popup.html"] },
   },
@@ -66,7 +102,7 @@ await build({
 await build({
   ...shared,
   build: {
-    outDir: "dist",
+    outDir,
     emptyOutDir: false,
     lib: {
       entry: "src/options/dialog.ts",
@@ -75,19 +111,44 @@ await build({
     },
   },
 });
-await copyFile("manifest.json", "dist/manifest.json");
-await copyFile("NOTICE.md", "dist/NOTICE.md");
-await mkdir("dist/licenses", { recursive: true });
+const manifest = JSON.parse(await readFile("manifest.json", "utf8"));
+if (development) {
+  manifest.name += " (Development)";
+  manifest.version_name = `${manifest.version} development`;
+  manifest.host_permissions.push(
+    `http://127.0.0.1:${new URL(devEndpoint).port}/*`,
+  );
+  manifest.content_scripts[0].js.push("dev-page.js");
+  await build({
+    ...shared,
+    build: {
+      outDir,
+      emptyOutDir: false,
+      lib: {
+        entry: "src/dev/page.ts",
+        formats: ["iife"],
+        name: "CinemaDevelopmentPage",
+        fileName: () => "dev-page.js",
+      },
+    },
+  });
+}
+await writeFile(
+  `${outDir}/manifest.json`,
+  JSON.stringify(manifest, null, 2) + "\n",
+);
+await copyFile("NOTICE.md", `${outDir}/NOTICE.md`);
+await mkdir(`${outDir}/licenses`, { recursive: true });
 await Promise.all([
-  copyFile("node_modules/lucide/LICENSE", "dist/licenses/Lucide.txt"),
-  copyFile("node_modules/react/LICENSE", "dist/licenses/React.txt"),
-  copyFile("node_modules/react-dom/LICENSE", "dist/licenses/ReactDOM.txt"),
+  copyFile("node_modules/lucide/LICENSE", `${outDir}/licenses/Lucide.txt`),
+  copyFile("node_modules/react/LICENSE", `${outDir}/licenses/React.txt`),
+  copyFile("node_modules/react-dom/LICENSE", `${outDir}/licenses/ReactDOM.txt`),
   copyFile(
     "node_modules/liquid-glass-react/LICENSE",
-    "dist/licenses/LiquidGlass.txt",
+    `${outDir}/licenses/LiquidGlass.txt`,
   ),
 ]);
-await mkdir("dist/icons", { recursive: true });
+await mkdir(`${outDir}/icons`, { recursive: true });
 // Original geometric extension icon. PNG encoding avoids external build-time tools.
 function crc32(buffer) {
   let crc = -1;
@@ -124,7 +185,7 @@ for (const size of [16, 32, 128]) {
   header[8] = 8;
   header[9] = 6;
   await writeFile(
-    `dist/icons/${size}.png`,
+    `${outDir}/icons/${size}.png`,
     Buffer.concat([
       Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
       chunk("IHDR", header),
@@ -133,14 +194,17 @@ for (const size of [16, 32, 128]) {
     ]),
   );
 }
-await build({
-  ...shared,
-  build: {
-    outDir: "design-preview",
-    emptyOutDir: true,
-    rollupOptions: { input: "preview.html" },
-  },
-});
+if (!development)
+  await build({
+    ...shared,
+    build: {
+      outDir: "design-preview",
+      emptyOutDir: true,
+      rollupOptions: { input: "preview.html" },
+    },
+  });
 console.log(
-  "Built dist/ (load unpacked) and design-preview/ (reference-based preview).",
+  development
+    ? "Development build complete."
+    : "Built dist/ (load unpacked) and design-preview/ (reference-based preview).",
 );

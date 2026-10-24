@@ -3,6 +3,7 @@ export default defineConfig({
   define: {
     __RC_EXTENSION__: false,
     __RC_BUILD__: JSON.stringify("development"),
+    __RC_DEV_ENDPOINT__: JSON.stringify(""),
   },
   server: { host: "127.0.0.1", watch: { usePolling: true, interval: 500 } },
 });

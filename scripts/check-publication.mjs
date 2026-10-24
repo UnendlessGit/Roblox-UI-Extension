@@ -54,7 +54,7 @@ const secrets = [
 const failures = [];
 for (const file of files) {
   if (
-    /(^|\/)(?:Roblox Current UI|Apple TV UI|artifacts|node_modules|test-results|playwright-report)(\/|$)/i.test(
+    /(^|\/)(?:Roblox Current UI|Apple TV UI|artifacts|node_modules|test-results|playwright-report|\.cinema-dev)(\/|$)/i.test(
       file,
     ) ||
     /(^|\/)(?:\.env(?:\..*)?|\.npmrc|\.netrc|id_rsa.*|id_ed25519.*)$|\.(?:pem|key|p12|pfx|map|zip)$/i.test(
@@ -66,6 +66,10 @@ for (const file of files) {
     continue;
   }
   const path = resolve(root, file);
+  if (directory && file === "dev-page.js") {
+    failures.push(`${file}: development helper cannot be published`);
+    continue;
+  }
   if (lstatSync(path).isSymbolicLink()) {
     failures.push(`${file}: symlink`);
     continue;

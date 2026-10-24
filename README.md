@@ -57,6 +57,8 @@ Profiles place identity alongside the native avatar stage and reveal About infor
 
 Requires Node.js 22.12+ or a current LTS release, and npm. Tested locally with Node 26.
 
+Work on `development`; merge tested releases into `main`. `npm run dev:extension` watches and rebuilds the unpacked extension, then automatically reloads it and its Roblox tabs after one initial manual activation. Ordinary release builds contain no reload helper. See [development reloads and release updates](docs/UPDATES.md) for the workflow and one-time Chrome Web Store setup needed for regular-user automatic updates.
+
 ```sh
 npm ci
 npm run dev

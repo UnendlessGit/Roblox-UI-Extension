@@ -11,6 +11,7 @@ playwright-report/
 /Apple TV UI/
 /artifacts/
 /PUBLICATION_AUDIT.md
+/.cinema-dev/
 
 # Local credentials, profiles, and machine configuration.
 .env

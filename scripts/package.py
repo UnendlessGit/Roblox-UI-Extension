@@ -13,7 +13,7 @@ STATIC_FILES = {
 }
 
 
-def package(build: Path, output: Path) -> Path:
+def package(build: Path, output: Path, *, store: bool = False) -> Path:
     if build.is_symlink():
         raise ValueError('Build directory must not be a symlink')
     actual = set()
@@ -34,17 +34,26 @@ def package(build: Path, output: Path) -> Path:
     expected = STATIC_FILES | assets
     if actual != expected:
         raise ValueError(f'Release allowlist mismatch: extra={sorted(actual-expected)}, missing={sorted(expected-actual)}')
-    version = json.loads((build/'manifest.json').read_text())['version']
+    manifest = json.loads((build/'manifest.json').read_text())
+    if ('development' in manifest.get('version_name', '').lower()
+        or any('127.0.0.1' in host for host in manifest.get('host_permissions', []))):
+        raise ValueError('Development builds cannot be released')
+    version = manifest['version']
     if not re.fullmatch(r'\d+\.\d+\.\d+', version):
         raise ValueError('Invalid release version')
     output.mkdir(parents=True, exist_ok=True)
-    destination = output/f'Roblox-Cinema-{version}.zip'
+    suffix = '-store' if store else ''
+    destination = output/f'Roblox-Cinema-{version}{suffix}.zip'
     with ZipFile(destination, 'w', compression=ZIP_DEFLATED) as archive:
         for name in sorted(expected):
-            archive.write(build/name, Path('Roblox Cinema')/name)
+            archive.write(build/name, name if store else Path('Roblox Cinema')/name)
     return destination
 
 
 if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--store', action='store_true', help='Put manifest.json at the ZIP root for Web Store upload')
+    args = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
-    print(package(root/'dist', root/'artifacts'))
+    print(package(root/'dist', root/'artifacts', store=args.store))

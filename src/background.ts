@@ -2,6 +2,7 @@ import { ResourceCache } from "./core/resource-cache";
 import { allowedResource, type ResourceKind } from "./core/bridge";
 import { normalizeSettings } from "./core/settings";
 import { validWallpaper } from "./core/wallpaper";
+import { startDevelopmentReload } from "./dev/reload";
 import {
   readWallpaper,
   writeWallpaper,
@@ -11,6 +12,12 @@ import {
 const resources = new ResourceCache();
 const pending = new Map<string, Promise<unknown>>();
 let settingsWrites = Promise.resolve();
+if (__RC_DEV_ENDPOINT__)
+  startDevelopmentReload(
+    __RC_DEV_ENDPOINT__,
+    __RC_BUILD__,
+    () => settingsWrites,
+  );
 chrome.runtime.onMessage.addListener((message, sender, respond) => {
   if (
     [

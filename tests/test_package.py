@@ -40,12 +40,31 @@ class ReleaseTests(unittest.TestCase):
                 release.package(build, root/'artifacts')
             self.assertFalse((root/'artifacts').exists())
 
+    def test_store_archive_has_root_manifest_and_same_allowlist(self):
+        with TemporaryDirectory() as d:
+            root = Path(d)
+            build = self.fixture(root)
+            archive = release.package(build, root/'artifacts', store=True)
+            with ZipFile(archive) as z:
+                self.assertIn('manifest.json', z.namelist())
+                self.assertEqual(len(z.namelist()), 18)
+                for name in z.namelist():
+                    self.assertEqual(z.read(name), (build/name).read_bytes())
+
     def test_symlink_is_rejected(self):
         with TemporaryDirectory() as d:
             root = Path(d)
             build = self.fixture(root)
             (build/'linked.txt').symlink_to(build/'manifest.json')
             with self.assertRaises(ValueError):
+                release.package(build, root/'artifacts')
+
+    def test_development_manifest_cannot_be_released(self):
+        with TemporaryDirectory() as d:
+            root = Path(d)
+            build = self.fixture(root)
+            (build/'manifest.json').write_text('{"version":"0.1.0","version_name":"0.1.0 development"}')
+            with self.assertRaisesRegex(ValueError, 'Development builds'):
                 release.package(build, root/'artifacts')
 
 
