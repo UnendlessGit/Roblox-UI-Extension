@@ -1194,6 +1194,7 @@ test("Home composes the hero behind friends, limits all recommendation groups to
 test("the rail drawer overlays without resizing content and restores keyboard focus", async () => {
   const page = await context.newPage();
   await page.goto("https://www.roblox.com/home");
+  await expect(page.locator("html")).toHaveAttribute("data-rc-shell", "ready");
   const toggle = page.getByRole("button", {
     name: "Open navigation",
     exact: true,
