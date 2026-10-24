@@ -2,6 +2,16 @@
 
 A macOS Chromium extension for a quieter Roblox: OLED black, an avatar-led Home, larger cinematic cards, a native overlay sidebar, and restrained motion.
 
+## Screenshots
+
+Click any screenshot to view it at full resolution.
+
+| Home | Continue and recommendations |
+|---|---|
+| [![Roblox Cinema Home with the avatar stage and friends](docs/screenshots/home.png)](docs/screenshots/home.png) | [![Home shelves with Continue and Recommended For You](docs/screenshots/home-shelves.png)](docs/screenshots/home-shelves.png) |
+| **Avatar Editor** | **Marketplace** |
+| [![Avatar Editor with full-width categories and large item cards](docs/screenshots/avatar-editor.png)](docs/screenshots/avatar-editor.png) | [![Marketplace filters and catalog item grid](docs/screenshots/marketplace.png)](docs/screenshots/marketplace.png) |
+
 ## Install on your Mac
 
 Download the ZIP from [GitHub Releases](https://github.com/UnendlessGit/Roblox-UI-Extension/releases/latest) and extract it. No terminal commands are needed to install the release. If you cloned the source repository, run `npm ci` and `npm run build` first; the generated extension is in `dist/`.

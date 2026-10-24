@@ -1,6 +1,28 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync, readdirSync, lstatSync } from "node:fs";
 import { resolve, relative, join } from "node:path";
+import { createHash } from "node:crypto";
+
+// These four documentation screenshots were explicitly supplied for public display.
+// Approve exact reviewed bytes only; other images and release contents stay restricted.
+const approvedScreenshots = new Map([
+  [
+    "docs/screenshots/home.png",
+    "7279717b71110e2debd4bcc7da822dc944028356c01246aac75a920fb7eaba10",
+  ],
+  [
+    "docs/screenshots/home-shelves.png",
+    "badce3c5c64f677fc060b46b401edd85c0601218f8450da6bcc25a42def1c52c",
+  ],
+  [
+    "docs/screenshots/avatar-editor.png",
+    "7104eaa126c772df92a0704afd38c900dd74d77377d25329eacad664d9d80df2",
+  ],
+  [
+    "docs/screenshots/marketplace.png",
+    "d37531b191bd2e57e3f6df6c6b180b4d651c359d5475383e293154819123959e",
+  ],
+]);
 
 const args = process.argv.slice(2);
 const option = (name) =>
@@ -54,8 +76,11 @@ for (const file of files) {
         maxBuffer: 20 * 1024 * 1024,
       });
   if (/\.(?:png|jpe?g|webp|gif|avif|heic)$/i.test(file)) {
-    if (!directory || !/^icons\/(?:16|32|128)\.png$/.test(file))
-      failures.push(`${file}: unapproved bitmap`);
+    const approved = directory
+      ? /^icons\/(?:16|32|128)\.png$/.test(file)
+      : approvedScreenshots.get(file) ===
+        createHash("sha256").update(bytes).digest("hex");
+    if (!approved) failures.push(`${file}: unapproved bitmap`);
     continue;
   }
   if (bytes.includes(0)) {
