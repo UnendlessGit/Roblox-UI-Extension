@@ -1037,6 +1037,8 @@ function realisticHome() {
 }
 test("Continue adapts its whole-card count to width, retains its item anchor, and bounds its final batch", async () => {
   const page = await context.newPage();
+  // Measure discrete page geometry without racing the browser's smooth scroll.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.route("https://www.roblox.com/home", (r) =>
     r.fulfill({ body: realisticHome(), contentType: "text/html" }),
   );
