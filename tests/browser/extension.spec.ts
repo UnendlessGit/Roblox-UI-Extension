@@ -527,6 +527,7 @@ test("community sidebar and content remain separate without fixed-position overl
     }),
   );
   await page.goto("https://www.roblox.com/communities/123");
+  await expect(page.locator("html")).toHaveAttribute("data-rc-shell", "ready");
   const nav = await page.locator(".groups-list-sidebar").boundingBox(),
     content = await page.locator(".group-details").boundingBox();
   expect(content!.x).toBeGreaterThan(nav!.x + nav!.width);
