@@ -1,3 +1,4 @@
+import { checkRelease, startReleaseChecks } from "./update-checker";
 import { ResourceCache } from "./core/resource-cache";
 import { allowedResource, type ResourceKind } from "./core/bridge";
 import { normalizeSettings } from "./core/settings";
@@ -9,6 +10,7 @@ import {
   listWallpapers,
   deleteWallpaper,
 } from "./core/wallpaper-db";
+startReleaseChecks();
 const resources = new ResourceCache();
 const pending = new Map<string, Promise<unknown>>();
 let settingsWrites = Promise.resolve();
@@ -19,6 +21,17 @@ if (__RC_DEV_ENDPOINT__)
     () => settingsWrites,
   );
 chrome.runtime.onMessage.addListener((message, sender, respond) => {
+  if (message?.type === "check-release") {
+    if (sender.id !== chrome.runtime.id) {
+      respond({ ok: false });
+      return;
+    }
+    void checkRelease(message.force === true).then(
+      (state) => respond({ ok: true, state }),
+      () => respond({ ok: false }),
+    );
+    return true;
+  }
   if (
     [
       "wallpaper-get",

@@ -22,7 +22,11 @@ There is one initial manual activation because an already-installed release cann
 
 ## Regular users
 
-Updating GitHub does not update an unpacked installation. For normal Chrome installations on macOS and Windows, automatic updates should use the [Chrome Web Store](https://developer.chrome.com/docs/extensions/how-to/distribute). Users install the store version once; the browser subsequently installs approved updates. Changes to `main` are not instantaneous device updates: a higher manifest version, successful checks, store review and browser rollout are required. GitHub ZIP installs remain manual.
+GitHub ZIP installations use manual updates. Cinema checks the public GitHub release metadata at startup, every six hours while the browser runs, and when its settings or popup opens (using a six-hour cache). A **NEW** badge appears on the extension icon when a newer stable release with the extension ZIP is available. Cinema settings, including the in-page gear and popup, show **New version available** and a **Download update** button. **Check for updates** refreshes manually, limited to once a minute. Offline or rate-limited checks preserve a previously discovered update and retry later.
+
+Download the ZIP, extract its contents into the same extension folder you originally loaded, then reload Roblox Cinema from your browser's extension controls and refresh Roblox. Keep the same folder and installation to preserve settings and wallpaper copies. Do not uninstall the extension. The updater downloads no executable code automatically and does not install packages. It contacts only GitHub's public release endpoint without credentials, cookies or account data. This release must be installed once manually before its update notices can appear. A commit on `main` alone does not trigger a notice: publish a higher-version stable GitHub release with its matching ZIP.
+
+Chrome Web Store publication is optional and currently disabled. It is not needed for these update notices.
 
 The repository includes a disabled-by-default Web Store publishing job. It runs only for pushes to `main`, after the complete validation job succeeds, and only when the repository variable `CWS_ENABLED` equals `true`. It builds a normal extension, scans the distribution, creates a root-manifest store ZIP, uploads through Google's official API and submits for ordinary review. It skips versions already published or submitted. Development pushes and pull requests never receive publishing credentials or run this job.
 

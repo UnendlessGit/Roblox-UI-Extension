@@ -1,15 +1,17 @@
 {
   "manifest_version": 3,
   "name": "Roblox Cinema",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "A quieter Roblox. Cinematic cards, an avatar stage, and liquid glass, designed for macOS.",
   "minimum_chrome_version": "120",
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "alarms"
   ],
   "host_permissions": [
-    "https://*.roblox.com/*"
+    "https://*.roblox.com/*",
+    "https://api.github.com/*"
   ],
   "background": {
     "service_worker": "background.js",

@@ -1,4 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+// Keep resource-fetch assertions independent of the separately tested release checker.
+vi.mock("../../src/update-checker", () => ({
+  startReleaseChecks: vi.fn(),
+  checkRelease: vi.fn(),
+}));
 import { allowedCdnImage } from "../../src/core/urls";
 import { readIdentity } from "../../src/core/dom";
 import { createHero } from "../../src/ui/hero";

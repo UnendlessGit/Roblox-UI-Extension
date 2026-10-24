@@ -1,3 +1,4 @@
+import { mountUpdateNotice } from "./update-notice";
 import { element, link } from "../core/dom";
 import {
   DEFAULTS,
@@ -32,6 +33,7 @@ export async function renderPreferences(
   );
   brand.append(mark, identity);
   root.append(brand);
+  const disposeUpdates = mountUpdateNotice(root);
   if (!options.popup) {
     const title = element("div", "settings-intro");
     title.append(
@@ -304,6 +306,7 @@ export async function renderPreferences(
   });
   return () => {
     unsubscribe();
+    disposeUpdates();
     disposeWallpaper();
     clearTimeout(errorTimer);
   };

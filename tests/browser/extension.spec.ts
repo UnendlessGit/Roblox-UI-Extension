@@ -2788,3 +2788,65 @@ test("wallpapers keep independent local copies, a persistent gallery, frosted co
     chrome.storage.local.set({ settings: { enabled: true } }),
   );
 });
+
+test("GitHub update notice appears in settings and popup with a safe ZIP link", async () => {
+  const installed = await worker.evaluate(
+    () => chrome.runtime.getManifest().version,
+  );
+  await worker.evaluate(async () => {
+    await chrome.storage.local.set({
+      "cinema-release-update": {
+        checkedAt: Date.now(),
+        release: {
+          version: "99.0.0",
+          download:
+            "https://github.com/UnendlessGit/Roblox-UI-Extension/releases/download/v99.0.0/Roblox-Cinema-99.0.0.zip",
+        },
+      },
+    });
+  });
+  const page = await context.newPage();
+  try {
+    for (const file of ["options.html", "popup.html"]) {
+      await page.goto(`chrome-extension://${extensionId}/${file}`);
+      await expect(
+        page.getByText("New version available · v99.0.0"),
+      ).toBeVisible();
+      const download = page.getByRole("link", { name: "Download update" });
+      await expect(download).toHaveAttribute(
+        "href",
+        /\/releases\/download\/v99\.0\.0\/Roblox-Cinema-99\.0\.0\.zip$/,
+      );
+      await expect(
+        page.getByRole("button", { name: "Check for updates" }),
+      ).toBeEnabled();
+    }
+    expect(await worker.evaluate(() => chrome.action.getBadgeText({}))).toBe(
+      "NEW",
+    );
+    await worker.evaluate(async (version) => {
+      await chrome.storage.local.set({
+        "cinema-release-update": {
+          checkedAt: Date.now(),
+          release: {
+            version,
+            download:
+              "https://github.com/UnendlessGit/Roblox-UI-Extension/releases/latest",
+          },
+        },
+      });
+    }, installed);
+    await expect(
+      page.getByRole("link", { name: "Download update" }),
+    ).toBeHidden();
+    await page.getByRole("button", { name: "Check for updates" }).click();
+    await expect(
+      page.getByText("You’re up to date. Updates are checked automatically."),
+    ).toBeVisible();
+    expect(await worker.evaluate(() => chrome.action.getBadgeText({}))).toBe(
+      "",
+    );
+  } finally {
+    await page.close();
+  }
+});

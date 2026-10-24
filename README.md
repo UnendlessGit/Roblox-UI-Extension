@@ -33,6 +33,9 @@ The preview uses fictional sample identities, balances, names and activity, plus
 
 ## Preferences
 
+Cinema checks GitHub for new stable releases. A **NEW** toolbar badge and **Download update** button in Cinema settings let ZIP users know when to update. Installation stays manual; see the [update guide](docs/UPDATES.md#regular-users).
+
+
 - **Enable Cinema:** apply or restore the redesign across Roblox.
 - **Home avatar:** a normal full-body thumbnail. The interactive 3D renderer and its dependencies have been removed.
 - **Home background:** pure black by default. Import JPG, PNG, WebP or AVIF images in Cinema preferences, from either the extension or the page's gear. Each import saves an independent local copy; moving or deleting the original file has no effect. Saved images form a gallery, and deleting a gallery entry deletes its stored copy. **Use solid black** keeps the gallery for later.
@@ -87,7 +90,9 @@ The content script runs on Roblox HTML documents. The separate bundled [liquid-g
 
 Preferences stay in `chrome.storage.local`. Imported wallpapers and their thumbnails stay in the extension's local IndexedDB, with no link to the original file and no image upload or cloud sync. Gallery deletion removes both the original stored copy and its thumbnail; uninstalling the extension removes its saved data. There is no analytics, backend, account registration, remote executable code, cookie-reading permission, or transaction automation.
 
-Roblox host access enables styling its pages and reading the current account identity already present in the page. `activeTab` lets the popup identify the current site for its enable switch. The worker accepts only normal avatar-thumbnail, public user-verification, bounded public game-statistic, and specific public catalog item/recommendation/thumbnail lookups from the extension's Roblox content scripts. Every resource request is GET, with strict destination and parameter checks, rejected redirects, a streaming size limit, and timeouts. Public catalog recovery omits credentials and cannot invoke purchase, account, resale, or favorite endpoints. Every worker fetch, including avatar thumbnails, uses `credentials: "omit"`; no authentication is attached by the worker. Avatar URLs and the native-header fallback require HTTPS and an exact Roblox CDN host/subdomain boundary, with no embedded credentials or custom ports. Preference writes are serialized centrally to preserve rapid changes across open tabs.
+The `alarms` permission schedules update checks. GitHub API host access is used only to read public release metadata without credentials; no Roblox identity, preferences or images are sent. Update metadata is cached locally, and the extension never installs downloaded code.
+
+Roblox host access enables styling its pages and reading the current account identity already present in the page. `activeTab` lets the popup identify the current site for its enable switch. The worker accepts only normal avatar-thumbnail, public user-verification, bounded public game-statistic, and specific public catalog item/recommendation/thumbnail lookups from the extension's Roblox content scripts. Every Roblox resource request is GET, with strict destination and parameter checks, rejected redirects, a streaming size limit, and timeouts. Public catalog recovery omits credentials and cannot invoke purchase, account, resale, or favorite endpoints. Every worker fetch, including avatar thumbnails, uses `credentials: "omit"`; no authentication is attached by the worker. Avatar URLs and the native-header fallback require HTTPS and an exact Roblox CDN host/subdomain boundary, with no embedded credentials or custom ports. Preference writes are serialized centrally to preserve rapid changes across open tabs.
 
 ## Coverage and limits
 
