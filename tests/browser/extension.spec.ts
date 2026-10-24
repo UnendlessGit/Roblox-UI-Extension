@@ -26,6 +26,10 @@ test.beforeAll(async ({}, testInfo) => {
   profile = await mkdtemp(join(tmpdir(), "roblox-cinema-test-"));
   context = await chromium.launchPersistentContext(profile, {
     headless: true,
+    // Extensions need full Chromium, rather than Playwright's headless shell.
+    channel: testInfo.project.use.launchOptions?.executablePath
+      ? undefined
+      : "chromium",
     executablePath: testInfo.project.use.launchOptions?.executablePath,
     args: [
       `--disable-extensions-except=${resolve("dist")}`,
